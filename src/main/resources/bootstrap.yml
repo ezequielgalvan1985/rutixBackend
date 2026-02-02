@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: rutix
+  logging:
+    level:
+      org.springframework.boot.context.logging: INFO
+
+  cloud:
+    config:
+      uri: http://ms-config:8081 #para despliegue en docker
+      username: root
+      password: s3cr3t
+
