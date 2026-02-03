@@ -45,6 +45,8 @@ public class Viaje {
     @JoinColumn(name = "perfil_creador_id",nullable = false, referencedColumnName ="id")
     private PerfilRutix perfilCreador;
 
+
+
     @OneToMany(mappedBy = "viaje",  cascade = CascadeType.ALL, fetch = FetchType.EAGER,orphanRemoval = true)
     private List<Reserva> listaReservas = new ArrayList<Reserva>();
 

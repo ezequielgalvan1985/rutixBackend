@@ -9,6 +9,7 @@ import elementary.Rutix.Viajes.consultas.BuscarIdViajeConsulta;
 import elementary.Rutix.Viajes.consultas.BuscarViajesConsulta;
 import elementary.Rutix.Viajes.consultas.ListadoViajeConsulta;
 import elementary.Rutix.Viajes.dto.BuscarViajesRequestConsultaDto;
+import elementary.Rutix.Viajes.dto.BuscarViajesResponseConsultaDto;
 import elementary.Rutix.Viajes.dto.ViajeDto;
 import elementary.Rutix.common.dto.ConsultaListadoRequestDto;
 import jakarta.validation.Valid;
@@ -65,8 +66,8 @@ public class ViajeController {
     }
 
     @PostMapping("/buscar")
-    public ResponseEntity<List<ViajeDto>> buscarViajesConsulta (@RequestBody BuscarViajesRequestConsultaDto request){
-        List<ViajeDto> resultset = this.buscarViajesConsulta.execute(request);
+    public ResponseEntity<List<BuscarViajesResponseConsultaDto>> buscarViajesConsulta (@RequestBody BuscarViajesRequestConsultaDto request){
+        List<BuscarViajesResponseConsultaDto> resultset = this.buscarViajesConsulta.execute(request);
         if (resultset.isEmpty()){
             return ResponseEntity.noContent().build();
         }

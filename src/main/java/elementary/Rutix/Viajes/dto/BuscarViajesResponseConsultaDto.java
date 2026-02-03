@@ -1,6 +1,7 @@
 package elementary.Rutix.Viajes.dto;
 
 import elementary.Rutix.PerfilRutix.dto.PerfilRutixDto;
+import elementary.Rutix.PerfilRutix.dto.PerfilRutixResumidoDto;
 import elementary.Rutix.common.EstadoViajeEnum;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,15 +20,13 @@ public class BuscarViajesResponseConsultaDto {
     private Long id;
     private LocalDate fechaSalida;
     private LocalTime horaSalida;
-
     private String ciudadPartida;
     private String ciudadDestino;
-
     private Integer lugaresTotales;
     private boolean pagaSenia;
     private Integer porcentajeSenia;
     private BigDecimal valor;
     private EstadoViajeEnum estado;
-    private PerfilRutixDto perfilCreador;
+    private PerfilRutixResumidoDto perfilCreador;
 
 }

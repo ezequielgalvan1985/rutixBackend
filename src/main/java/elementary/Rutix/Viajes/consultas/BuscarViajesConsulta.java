@@ -2,6 +2,7 @@ package elementary.Rutix.Viajes.consultas;
 
 import elementary.Rutix.Viajes.dominio.Viaje;
 import elementary.Rutix.Viajes.dto.BuscarViajesRequestConsultaDto;
+import elementary.Rutix.Viajes.dto.BuscarViajesResponseConsultaDto;
 import elementary.Rutix.Viajes.dto.ViajeDto;
 import elementary.Rutix.Viajes.repositorios.ViajeRepository;
 import elementary.Rutix.common.interfaces.Consulta;
@@ -15,7 +16,7 @@ import java.util.stream.Collectors;
 
 
 @Service
-public class BuscarViajesConsulta implements Consulta<BuscarViajesRequestConsultaDto, List<ViajeDto>> {
+public class BuscarViajesConsulta implements Consulta<BuscarViajesRequestConsultaDto, List<BuscarViajesResponseConsultaDto>> {
 
     private ModelMapper modelMapper;
     private ViajeRepository repo;
@@ -29,12 +30,12 @@ public class BuscarViajesConsulta implements Consulta<BuscarViajesRequestConsult
     }
 
     @Override
-    public List<ViajeDto> execute(BuscarViajesRequestConsultaDto input) {
+    public List<BuscarViajesResponseConsultaDto> execute(BuscarViajesRequestConsultaDto input) {
         Pageable page = PageRequest.of(0, input.getLimit());
         List<Viaje> resultset = this.repo.buscarViajes(input.getFechaSalida(), input.getCiudadPartida(), input.getCiudadDestino(), input.getOffset(), page);
         return resultset
                 .stream()
-                .map(model->modelMapper.map(model, ViajeDto.class))
+                .map(model->modelMapper.map(model, BuscarViajesResponseConsultaDto.class))
                 .collect(Collectors.toList());
     }
 }
