@@ -25,6 +25,8 @@ public class PerfilRutix {
     private Long id;
     private Long usuarioId;
 
+    private String nombre;
+
     @Column(nullable = true)
     private Integer valoracion;
 

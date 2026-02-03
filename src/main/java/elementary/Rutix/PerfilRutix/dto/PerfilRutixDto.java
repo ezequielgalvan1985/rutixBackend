@@ -12,6 +12,8 @@ import java.util.List;
 public class PerfilRutixDto {
     private Long id;
 
+    private String nombre;
+
     @NotNull(message = "El usuario es obligatorio")
     private Long usuarioId;
 

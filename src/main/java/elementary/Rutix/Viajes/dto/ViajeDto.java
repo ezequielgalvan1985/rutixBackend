@@ -52,7 +52,7 @@ public class ViajeDto {
     private EstadoViajeEnum estado;
 
     @NotNull
-    private PerfilRutixDto perfilCreador;
+    private PerfilRutixDto conductor;
 
     private List<ReservaDto> listaReservas = new ArrayList<ReservaDto>();
 

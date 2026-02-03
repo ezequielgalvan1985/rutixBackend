@@ -27,6 +27,6 @@ public class BuscarViajesResponseConsultaDto {
     private Integer porcentajeSenia;
     private BigDecimal valor;
     private EstadoViajeEnum estado;
-    private PerfilRutixResumidoDto perfilCreador;
+    private PerfilRutixResumidoDto conductor;
 
 }

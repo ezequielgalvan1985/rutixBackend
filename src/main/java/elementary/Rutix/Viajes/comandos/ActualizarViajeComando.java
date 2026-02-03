@@ -32,11 +32,10 @@ public class ActualizarViajeComando implements Comando<ViajeDto, ViajeDto> {
     @Override
     public ViajeDto execute(ViajeDto input) {
         //validaciones
-        this.perfilConCuentaHabilitadaReglaNegocio.aplicar(input.getPerfilCreador().getId());
-        this.perfilConVehiculoHabilitadoReglaNegocio.aplicar(input.getPerfilCreador().getId());
+        this.perfilConCuentaHabilitadaReglaNegocio.aplicar(input.getConductor().getId());
+        this.perfilConVehiculoHabilitadoReglaNegocio.aplicar(input.getConductor().getId());
         Viaje v = modelMapper.map(input, Viaje.class);
 
-        //if (input.getLugaresReservados() > input.getLugaresReservados()) throw new ReglaNegocioException("Lugares Reservados supera la cantidad de lugares totales");
         //MAPEO
         Viaje viaje =this.repo.save(v);
 

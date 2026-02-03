@@ -33,8 +33,8 @@ public class RegistrarViajeComando implements Comando<ViajeDto, ViajeDto> {
     @Override
     public ViajeDto execute(ViajeDto input) {
         //validaciones
-        this.perfilConCuentaHabilitadaReglaNegocio.aplicar(input.getPerfilCreador().getId());
-        this.perfilConVehiculoHabilitadoReglaNegocio.aplicar(input.getPerfilCreador().getId());
+        this.perfilConCuentaHabilitadaReglaNegocio.aplicar(input.getConductor().getId());
+        this.perfilConVehiculoHabilitadoReglaNegocio.aplicar(input.getConductor().getId());
         //MAPEO
         Viaje v = modelMapper.map(input, Viaje.class);
 

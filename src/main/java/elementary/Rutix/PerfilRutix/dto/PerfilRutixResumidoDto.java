@@ -16,6 +16,7 @@ import java.util.List;
 public class PerfilRutixResumidoDto {
     private Long id;
     private Long usuarioId;
+    private String nombre;
     private Integer valoracion;
     private String direccion;
     private String telefono;

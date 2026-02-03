@@ -42,8 +42,8 @@ public class Viaje {
     private LocalTime horaLlegada;
 
     @ManyToOne
-    @JoinColumn(name = "perfil_creador_id",nullable = false, referencedColumnName ="id")
-    private PerfilRutix perfilCreador;
+    @JoinColumn(name = "perfil_id",nullable = false, referencedColumnName ="id")
+    private PerfilRutix conductor;
 
 
 
