@@ -53,14 +53,15 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             jwtToken = jwtToken.substring(7);
 
             DecodedJWT decodedJWT = jwtUtils.validateToken(jwtToken);
+            String userId = decodedJWT.getSubject();
+            String username = jwtUtils.getSpecificClaim(decodedJWT, "username").asString();
 
-            String username = jwtUtils.extractUsername(decodedJWT);
             String stringAuthorities = jwtUtils.getSpecificClaim(decodedJWT, "authorities").asString();
 
             Collection<? extends GrantedAuthority> authorities = AuthorityUtils.commaSeparatedStringToAuthorityList(stringAuthorities);
 
             SecurityContext context = SecurityContextHolder.createEmptyContext();
-            Authentication authenticationToken = new UsernamePasswordAuthenticationToken(username, null, authorities);
+            Authentication authenticationToken = new UsernamePasswordAuthenticationToken(Long.valueOf(userId), null, authorities);
             context.setAuthentication(authenticationToken);
             SecurityContextHolder.setContext(context);
 
