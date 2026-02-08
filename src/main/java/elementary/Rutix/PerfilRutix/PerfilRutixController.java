@@ -14,6 +14,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -74,7 +76,11 @@ public class PerfilRutixController {
         return ResponseEntity.ok(registro);
 
     }
-
+    @GetMapping("/me2")
+    public String me() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        return auth.getName();
+    }
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<PerfilRutixDto> add(@RequestBody PerfilRutixDto m, @RequestHeader("X-User-Name") String username) throws IOException, TimeoutException {

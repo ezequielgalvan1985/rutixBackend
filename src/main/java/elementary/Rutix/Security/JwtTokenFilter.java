@@ -15,6 +15,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
@@ -30,13 +31,14 @@ import java.util.Collection;
  * en resumen traduce el jwt al lenguaje que entiene el spring security para poder usar sus funciones
  *
  * */
-public class JwtTokenValidator extends OncePerRequestFilter {
+@Component
+public class JwtTokenFilter extends OncePerRequestFilter {
 
     private JwtUtils jwtUtils;
 
-    Logger logger = LoggerFactory.getLogger(JwtTokenValidator.class);
+    Logger logger = LoggerFactory.getLogger(JwtTokenFilter.class);
 
-    public JwtTokenValidator(JwtUtils jwtUtils) {
+    public JwtTokenFilter(JwtUtils jwtUtils) {
         this.jwtUtils = jwtUtils;
     }
 
