@@ -6,7 +6,6 @@ import elementary.Rutix.PerfilRutix.comandos.tarjetas.EliminarTarjetaDePerfilCom
 import elementary.Rutix.PerfilRutix.comandos.RegistrarPerfilRutixComando;
 import elementary.Rutix.PerfilRutix.consultas.BuscarIdPerfilRutixConsulta;
 import elementary.Rutix.PerfilRutix.consultas.ListadoPerfilRutixConsulta;
-import elementary.Rutix.PerfilRutix.consultas.ObtenerMiPerfilConsulta;
 import elementary.Rutix.PerfilRutix.dto.PerfilRutixDto;
 import elementary.Rutix.common.dto.ConsultaListadoRequestDto;
 import org.slf4j.Logger;
@@ -45,8 +44,6 @@ public class PerfilRutixController {
     @Autowired
     private EliminarTarjetaDePerfilComando eliminarTarjeta;
 
-    @Autowired
-    private ObtenerMiPerfilConsulta obtenerMiPerfilConsulta;
 
     private static final Logger logger = LoggerFactory.getLogger(PerfilRutixController.class);
 
@@ -70,17 +67,19 @@ public class PerfilRutixController {
     }
     @GetMapping(value="/me")
     public ResponseEntity<PerfilRutixDto> getMiPerfil(){
-
-        PerfilRutixDto registro =  obtenerMiPerfilConsulta.execute(null);
-
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        PerfilRutixDto registro =  buscar.execute(Long.valueOf(auth.getName()));
         return ResponseEntity.ok(registro);
 
     }
-    @GetMapping("/me2")
-    public String me() {
+    @PutMapping(value="/me")
+    public ResponseEntity<PerfilRutixDto> updMiPerfil(){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        return auth.getName();
+        PerfilRutixDto registro =  buscar.execute(Long.valueOf(auth.getName()));
+        return ResponseEntity.ok(registro);
+
     }
+
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<PerfilRutixDto> add(@RequestBody PerfilRutixDto m, @RequestHeader("X-User-Name") String username) throws IOException, TimeoutException {

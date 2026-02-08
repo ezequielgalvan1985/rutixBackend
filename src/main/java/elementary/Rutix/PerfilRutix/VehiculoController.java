@@ -61,7 +61,7 @@ public class VehiculoController {
 
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<PerfilRutixDto> add(@RequestBody VehiculoDto m, @RequestHeader("X-User-Name") String username) throws IOException, TimeoutException, IOException, TimeoutException {
+    public ResponseEntity<PerfilRutixDto> add(@RequestBody VehiculoDto m) throws IOException, TimeoutException, IOException, TimeoutException {
         return ResponseEntity.ok(registrar.execute(m));
     }
 
