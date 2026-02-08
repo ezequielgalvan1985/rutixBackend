@@ -6,6 +6,7 @@ import elementary.Rutix.PerfilRutix.comandos.tarjetas.EliminarTarjetaDePerfilCom
 import elementary.Rutix.PerfilRutix.comandos.RegistrarPerfilRutixComando;
 import elementary.Rutix.PerfilRutix.consultas.BuscarIdPerfilRutixConsulta;
 import elementary.Rutix.PerfilRutix.consultas.ListadoPerfilRutixConsulta;
+import elementary.Rutix.PerfilRutix.consultas.ObtenerMiPerfilConsulta;
 import elementary.Rutix.PerfilRutix.dto.PerfilRutixDto;
 import elementary.Rutix.common.dto.ConsultaListadoRequestDto;
 import org.slf4j.Logger;
@@ -25,8 +26,6 @@ import java.util.concurrent.TimeoutException;
 public class PerfilRutixController {
 
 
-
-
     @Autowired
     private RegistrarPerfilRutixComando registrar;
 
@@ -43,6 +42,9 @@ public class PerfilRutixController {
 
     @Autowired
     private EliminarTarjetaDePerfilComando eliminarTarjeta;
+
+    @Autowired
+    private ObtenerMiPerfilConsulta obtenerMiPerfilConsulta;
 
     private static final Logger logger = LoggerFactory.getLogger(PerfilRutixController.class);
 
@@ -61,6 +63,14 @@ public class PerfilRutixController {
     @GetMapping(value="/{id}")
     public ResponseEntity<PerfilRutixDto> view(@PathVariable("id") Long id){
         PerfilRutixDto registro =  buscar.execute(id);
+        return ResponseEntity.ok(registro);
+
+    }
+    @GetMapping(value="/me")
+    public ResponseEntity<PerfilRutixDto> getMiPerfil(){
+
+        PerfilRutixDto registro =  obtenerMiPerfilConsulta.execute(null);
+
         return ResponseEntity.ok(registro);
 
     }
