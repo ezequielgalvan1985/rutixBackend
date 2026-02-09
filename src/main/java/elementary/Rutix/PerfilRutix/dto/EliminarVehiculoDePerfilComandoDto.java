@@ -7,5 +7,4 @@ import lombok.Setter;
 @Setter
 public class EliminarVehiculoDePerfilComandoDto {
     private Long id;
-    private Long perfilId;
 }

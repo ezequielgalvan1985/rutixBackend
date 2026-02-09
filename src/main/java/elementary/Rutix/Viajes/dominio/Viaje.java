@@ -45,7 +45,9 @@ public class Viaje {
     @JoinColumn(name = "perfil_id",nullable = false, referencedColumnName ="id")
     private PerfilRutix conductor;
 
-
+    @ManyToOne
+    @JoinColumn(name = "vehiculo_id", nullable = false)
+    private Vehiculo vehiculo;
 
     @OneToMany(mappedBy = "viaje",  cascade = CascadeType.ALL, fetch = FetchType.EAGER,orphanRemoval = true)
     private List<Reserva> listaReservas = new ArrayList<Reserva>();

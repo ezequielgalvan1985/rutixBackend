@@ -70,10 +70,10 @@ public class VehiculoController {
         actualizar.execute(dto);
     }
 
-    @DeleteMapping()
+    @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@RequestBody EliminarVehiculoDePerfilComandoDto dto){
-        eliminar.execute(dto);
+    public void delete(@PathVariable("id") Long id){
+        eliminar.execute(id);
     }
 
 

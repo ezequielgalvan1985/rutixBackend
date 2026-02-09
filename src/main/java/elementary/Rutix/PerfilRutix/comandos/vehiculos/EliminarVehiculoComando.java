@@ -11,17 +11,17 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 @Service
-public class EliminarVehiculoComando implements Comando<EliminarVehiculoDePerfilComandoDto,Void> {
+public class EliminarVehiculoComando implements Comando<Long,Void> {
 
     @Autowired
     private PerfilRutixRepository repo;
 
     @Override
-    public Void execute(EliminarVehiculoDePerfilComandoDto input) {
+    public Void execute(Long input) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Long perfilId = Long.parseLong(auth.getName());
         PerfilRutix p = repo.findById(perfilId).orElseThrow(()-> new ReglaNegocioException("Perfil inexistente"));
-        p.eliminarVehiculo(input.getId());
+        p.eliminarVehiculo(input);
         repo.save(p);
         return null;
     }
