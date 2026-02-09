@@ -82,7 +82,7 @@ public class PerfilRutixController {
 
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<PerfilRutixDto> add(@RequestBody PerfilRutixDto m, @RequestHeader("X-User-Name") String username) throws IOException, TimeoutException {
+    public ResponseEntity<PerfilRutixDto> add(@RequestBody PerfilRutixDto m) throws IOException, TimeoutException {
         return ResponseEntity.ok(registrar.execute(m));
     }
 

@@ -11,6 +11,8 @@ import elementary.Rutix.common.excepciones.ReglaNegocioException;
 import elementary.Rutix.common.interfaces.Comando;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -24,8 +26,9 @@ public class ActualizarVehiculoComando implements Comando<ActualizarVehiculoComa
 
     @Override
     public PerfilRutixDto execute(ActualizarVehiculoComandoDto input) {
-
-        PerfilRutix p =this.repoPerfil.findById(input.getPerfilId()).orElseThrow(()-> new ReglaNegocioException("Perfil No encontrado"));
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Long perfilId = Long.parseLong(auth.getName());
+        PerfilRutix p = repoPerfil.findById(perfilId).orElseThrow(()-> new ReglaNegocioException("Perfil inexistente"));
         p.actualizarVehiculo(input);
         this.repoPerfil.save(p);
 

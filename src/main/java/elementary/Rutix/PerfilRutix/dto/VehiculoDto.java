@@ -15,8 +15,6 @@ public class VehiculoDto {
 
     private Long id;
 
-    private Long perfilId;
-
     @Size(max = 255, message = "La descripción no puede superar los 255 caracteres")
     private String descripcion;
 

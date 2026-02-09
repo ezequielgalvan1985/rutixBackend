@@ -15,8 +15,6 @@ public class ActualizarVehiculoComandoDto {
     @NotNull(message = "El Id de vehiculo es obligatorio")
     private Long id;
 
-    @NotNull(message = "El Id de vehiculo es obligatorio")
-    private Long perfilId;
 
     @Size(max = 255, message = "La descripción no puede superar los 255 caracteres")
     private String descripcion;

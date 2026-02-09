@@ -10,6 +10,8 @@ import elementary.Rutix.common.excepciones.ReglaNegocioException;
 import elementary.Rutix.common.interfaces.Comando;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 
@@ -24,9 +26,11 @@ public class RegistrarVehiculoComando implements Comando<VehiculoDto, PerfilRuti
 
     @Override
     public PerfilRutixDto execute(VehiculoDto input) {
-        PerfilRutix p = repoPerfil.findById(input.getPerfilId()).orElseThrow(()-> new ReglaNegocioException("Perfil inexistente"));
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Long perfilId = Long.parseLong(auth.getName());
+        PerfilRutix p = repoPerfil.findById(perfilId).orElseThrow(()-> new ReglaNegocioException("Perfil inexistente"));
         Vehiculo v = modelMapper.map(input, Vehiculo.class);
-
+        v.setPerfil(p);
         p.agregarVehiculo(v);
         return  modelMapper.map(repoPerfil.save(p), PerfilRutixDto.class);
 
