@@ -1,5 +1,6 @@
 package elementary.Rutix.Viajes.dto;
 
+import elementary.Rutix.PerfilRutix.dominio.Vehiculo;
 import elementary.Rutix.PerfilRutix.dto.PerfilRutixDto;
 import elementary.Rutix.Viajes.dominio.Reserva;
 import elementary.Rutix.common.validators.interfaces.ValidFechaSalidaViaje;
@@ -36,6 +37,12 @@ public class ViajeDto {
     @Size(max=100, message = "Destino supera la cantidad maxima de caracteres permitida 100")
     private String ciudadDestino;
 
+    @NotNull
+    private PerfilRutixDto conductor;
+
+    private Vehiculo vehiculo;
+
+    private List<ReservaDto> listaReservas = new ArrayList<ReservaDto>();
 
     @Max(value=30,message="Cantidad maxima permitida 30")
     private Integer lugaresTotales;
@@ -51,9 +58,6 @@ public class ViajeDto {
 
     private EstadoViajeEnum estado;
 
-    @NotNull
-    private PerfilRutixDto conductor;
 
-    private List<ReservaDto> listaReservas = new ArrayList<ReservaDto>();
 
 }
