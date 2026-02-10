@@ -10,6 +10,7 @@ import elementary.Rutix.Viajes.consultas.BuscarViajesConsulta;
 import elementary.Rutix.Viajes.consultas.ListadoViajeConsulta;
 import elementary.Rutix.Viajes.dto.BuscarViajesRequestConsultaDto;
 import elementary.Rutix.Viajes.dto.BuscarViajesResponseConsultaDto;
+import elementary.Rutix.Viajes.dto.RegistrarViajeRequestComandoDto;
 import elementary.Rutix.Viajes.dto.ViajeDto;
 import elementary.Rutix.common.dto.ConsultaListadoRequestDto;
 import jakarta.validation.Valid;
@@ -82,7 +83,7 @@ public class ViajeController {
 
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<ViajeDto> add(@RequestBody @Valid ViajeDto m, @RequestHeader("X-User-Name") String username) throws IOException, TimeoutException, IOException, TimeoutException {
+    public ResponseEntity<ViajeDto> add(@RequestBody @Valid RegistrarViajeRequestComandoDto m, @RequestHeader("X-User-Name") String username) throws IOException, TimeoutException, IOException, TimeoutException {
         return ResponseEntity.ok(registrarViajeUseCase.execute(m));
     }
 
