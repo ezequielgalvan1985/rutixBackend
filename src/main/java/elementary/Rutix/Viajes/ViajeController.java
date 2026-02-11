@@ -8,10 +8,7 @@ import elementary.Rutix.Viajes.comandos.RegistrarViajeComando;
 import elementary.Rutix.Viajes.consultas.BuscarIdViajeConsulta;
 import elementary.Rutix.Viajes.consultas.BuscarViajesConsulta;
 import elementary.Rutix.Viajes.consultas.ListadoViajeConsulta;
-import elementary.Rutix.Viajes.dto.BuscarViajesRequestConsultaDto;
-import elementary.Rutix.Viajes.dto.BuscarViajesResponseConsultaDto;
-import elementary.Rutix.Viajes.dto.RegistrarViajeRequestComandoDto;
-import elementary.Rutix.Viajes.dto.ViajeDto;
+import elementary.Rutix.Viajes.dto.*;
 import elementary.Rutix.common.dto.ConsultaListadoRequestDto;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
@@ -83,7 +80,7 @@ public class ViajeController {
 
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<ViajeDto> add(@RequestBody @Valid RegistrarViajeRequestComandoDto m, @RequestHeader("X-User-Name") String username) throws IOException, TimeoutException, IOException, TimeoutException {
+    public ResponseEntity<ViajeResumidoDto> add(@RequestBody @Valid RegistrarViajeRequestComandoDto m) throws IOException, TimeoutException, IOException, TimeoutException {
         return ResponseEntity.ok(registrarViajeUseCase.execute(m));
     }
 

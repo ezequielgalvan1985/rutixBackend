@@ -2,6 +2,7 @@ package elementary.Rutix.Viajes.dto;
 
 import elementary.Rutix.PerfilRutix.dominio.Vehiculo;
 import elementary.Rutix.PerfilRutix.dto.PerfilRutixDto;
+import elementary.Rutix.PerfilRutix.dto.VehiculoDto;
 import elementary.Rutix.Viajes.dominio.Reserva;
 import elementary.Rutix.common.validators.interfaces.ValidFechaSalidaViaje;
 import elementary.Rutix.common.EstadoViajeEnum;
@@ -9,7 +10,7 @@ import jakarta.persistence.CascadeType;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.*;
-import lombok.Data;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -18,7 +19,10 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
-@Data
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class ViajeDto {
     private Long id;
 
@@ -40,7 +44,7 @@ public class ViajeDto {
     @NotNull
     private PerfilRutixDto conductor;
 
-    private Vehiculo vehiculo;
+    private VehiculoDto vehiculo;
 
     private List<ReservaDto> listaReservas = new ArrayList<ReservaDto>();
 

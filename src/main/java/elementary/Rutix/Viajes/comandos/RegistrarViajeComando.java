@@ -8,6 +8,7 @@ import elementary.Rutix.PerfilRutix.utlis.reglas.policy.PerfilConVehiculoHabilit
 import elementary.Rutix.Viajes.dominio.Viaje;
 import elementary.Rutix.Viajes.dto.RegistrarViajeRequestComandoDto;
 import elementary.Rutix.Viajes.dto.ViajeDto;
+import elementary.Rutix.Viajes.dto.ViajeResumidoDto;
 import elementary.Rutix.Viajes.repositorios.ViajeRepository;
 import elementary.Rutix.common.EstadoViajeEnum;
 import elementary.Rutix.common.excepciones.ReglaNegocioException;
@@ -19,7 +20,7 @@ import org.springframework.stereotype.Service;
 
 
 @Service
-public class RegistrarViajeComando implements Comando<RegistrarViajeRequestComandoDto, ViajeDto> {
+public class RegistrarViajeComando implements Comando<RegistrarViajeRequestComandoDto, ViajeResumidoDto> {
 
     private ModelMapper modelMapper;
     private ViajeRepository repo;
@@ -41,7 +42,7 @@ public class RegistrarViajeComando implements Comando<RegistrarViajeRequestComan
     }
 
     @Override
-    public ViajeDto execute(RegistrarViajeRequestComandoDto input) {
+    public ViajeResumidoDto execute(RegistrarViajeRequestComandoDto input) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Long perfilId = Long.parseLong(auth.getName());
 
@@ -72,8 +73,9 @@ public class RegistrarViajeComando implements Comando<RegistrarViajeRequestComan
         v.setEstado(EstadoViajeEnum.valueOf("CREADO"));
 
         Viaje viaje = this.repo.save(v);
+
         //Respuesta
-        return   modelMapper.map(viaje,ViajeDto.class);
+        return   modelMapper.map(viaje, ViajeResumidoDto.class);
     }
 
 }
