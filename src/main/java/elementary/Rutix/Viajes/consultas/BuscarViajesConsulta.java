@@ -7,6 +7,7 @@ import elementary.Rutix.Viajes.dto.BuscarViajesRequestConsultaDto;
 import elementary.Rutix.Viajes.dto.BuscarViajesResponseConsultaDto;
 import elementary.Rutix.Viajes.dto.ViajeResumidoDto;
 import elementary.Rutix.Viajes.repositorios.ViajeRepository;
+import elementary.Rutix.common.dto.PageResponseDto;
 import elementary.Rutix.common.interfaces.Consulta;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
@@ -19,7 +20,7 @@ import java.util.stream.Collectors;
 
 
 @Service
-public class BuscarViajesConsulta implements Consulta<BuscarViajesRequestConsultaDto, Page<ViajeResumidoDto>> {
+public class BuscarViajesConsulta implements Consulta<BuscarViajesRequestConsultaDto, PageResponseDto<ViajeResumidoDto>> {
 
     private ModelMapper modelMapper;
     private ViajeRepository repo;
@@ -31,15 +32,21 @@ public class BuscarViajesConsulta implements Consulta<BuscarViajesRequestConsult
     }
 
     @Override
-    public Page<ViajeResumidoDto> execute(BuscarViajesRequestConsultaDto input) {
+    public PageResponseDto<ViajeResumidoDto> execute(BuscarViajesRequestConsultaDto input) {
         Pageable pageable = PageRequest.of(
                 input.getOffset().intValue(),   // page
                 input.getLimit(),               // size
                 Sort.by(Sort.Direction.DESC, "id")
         );
 
-        Page<Viaje> resultset = this.repo.buscarViajes(input.getFechaSalida(), input.getCiudadPartida(), input.getCiudadDestino(), input.getOffset(), pageable);
-        return resultset.map(this::toDto);
+        Page<Viaje> result = this.repo.buscarViajes(input.getFechaSalida(), input.getCiudadPartida(), input.getCiudadDestino(), input.getOffset(), pageable);
+        return PageResponseDto.<ViajeResumidoDto>builder()
+                .data(result.map(this::toDto).getContent())
+                .page(result.getNumber())
+                .size(result.getSize())
+                .total(result.getTotalElements())
+                .hasNext(result.hasNext())
+                .build();
     }
 
     private ViajeResumidoDto toDto(Viaje r) {

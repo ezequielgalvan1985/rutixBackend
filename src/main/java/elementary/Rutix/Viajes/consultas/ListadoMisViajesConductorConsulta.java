@@ -8,6 +8,7 @@ import elementary.Rutix.Viajes.dominio.Viaje;
 import elementary.Rutix.Viajes.dto.ViajeResumidoDto;
 import elementary.Rutix.Viajes.repositorios.ViajeRepository;
 import elementary.Rutix.common.dto.ConsultaListadoRequestDto;
+import elementary.Rutix.common.dto.PageResponseDto;
 import elementary.Rutix.common.excepciones.ReglaNegocioException;
 import elementary.Rutix.common.interfaces.Consulta;
 import org.modelmapper.ModelMapper;
@@ -21,7 +22,7 @@ import org.springframework.stereotype.Service;
 
 
 @Service
-public class ListadoMisViajesConductorConsulta implements Consulta<ConsultaListadoRequestDto, Page<ViajeResumidoDto>> {
+public class ListadoMisViajesConductorConsulta implements Consulta<ConsultaListadoRequestDto, PageResponseDto<ViajeResumidoDto>> {
 
     private ModelMapper modelMapper;
     private ViajeRepository repo;
@@ -38,7 +39,7 @@ public class ListadoMisViajesConductorConsulta implements Consulta<ConsultaLista
     }
 
     @Override
-    public Page<ViajeResumidoDto> execute(ConsultaListadoRequestDto value) {
+    public PageResponseDto<ViajeResumidoDto> execute(ConsultaListadoRequestDto value) {
         Pageable pageable = PageRequest.of(
                 value.getOffset().intValue(),   // page
                 value.getLimit(),               // size
@@ -49,8 +50,15 @@ public class ListadoMisViajesConductorConsulta implements Consulta<ConsultaLista
         Long uid = Long.parseLong(auth.getName());
         PerfilRutix p = repoPerfil.findByUsuarioId(uid).orElseThrow(() -> new ReglaNegocioException("No se encontró el perfil"));
 
-        Page<Viaje> resultset = this.repo.findByConductorIdOrderByIdDesc(p.getId(), pageable);
-        return resultset.map(this::toDto);
+        Page<Viaje> result = this.repo.findByConductorIdOrderByIdDesc(p.getId(), pageable);
+
+        return PageResponseDto.<ViajeResumidoDto>builder()
+                .data(result.map(this::toDto).getContent())
+                .page(result.getNumber())
+                .size(result.getSize())
+                .total(result.getTotalElements())
+                .hasNext(result.hasNext())
+                .build();
     }
 
     private ViajeResumidoDto toDto(Viaje r) {

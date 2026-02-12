@@ -11,6 +11,7 @@ import elementary.Rutix.Viajes.consultas.ListadoMisViajesConductorConsulta;
 import elementary.Rutix.Viajes.consultas.ListadoViajeConsulta;
 import elementary.Rutix.Viajes.dto.*;
 import elementary.Rutix.common.dto.ConsultaListadoRequestDto;
+import elementary.Rutix.common.dto.PageResponseDto;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -58,10 +59,10 @@ public class ViajeController {
     }
 
     @GetMapping("/listado/misviajes/conductor")
-    public ResponseEntity<Page<ViajeResumidoDto>> listadoMisViajesConductorConsulta (
+    public ResponseEntity<PageResponseDto<ViajeResumidoDto>> listadoMisViajesConductorConsulta (
             @RequestParam(value = "limit", required = false, defaultValue = "25") int limit,
             @RequestParam(value = "offset", required = false, defaultValue = "0") Long offset){
-        Page<ViajeResumidoDto> resultset = this.listadoMisViajesConductorConsulta.execute(new ConsultaListadoRequestDto(offset,limit));
+        PageResponseDto<ViajeResumidoDto> resultset = this.listadoMisViajesConductorConsulta.execute(new ConsultaListadoRequestDto(offset,limit));
         return ResponseEntity.ok(resultset);
     }
 
@@ -77,8 +78,8 @@ public class ViajeController {
     }
 
     @PostMapping("/buscar")
-    public ResponseEntity<Page<ViajeResumidoDto>> buscarViajesConsulta (@RequestBody BuscarViajesRequestConsultaDto request){
-        Page<ViajeResumidoDto> resultset = this.buscarViajesConsulta.execute(request);
+    public ResponseEntity<PageResponseDto<ViajeResumidoDto>> buscarViajesConsulta (@RequestBody BuscarViajesRequestConsultaDto request){
+        PageResponseDto<ViajeResumidoDto> resultset = this.buscarViajesConsulta.execute(request);
         return ResponseEntity.ok(resultset);
     }
 
