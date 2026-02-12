@@ -8,7 +8,9 @@ import elementary.Rutix.Viajes.comandos.reservas.ActualizarReservaDeViajeComando
 import elementary.Rutix.Viajes.comandos.reservas.EliminarReservaDeViajeComando;
 import elementary.Rutix.Viajes.comandos.reservas.RegistrarReservaEnViajeComando;
 import elementary.Rutix.Viajes.consultas.reservas.BuscarIdReservaConsulta;
+import elementary.Rutix.Viajes.consultas.reservas.ListadoByPasajeroIdConsulta;
 import elementary.Rutix.Viajes.consultas.reservas.ListadoReservasConsulta;
+import elementary.Rutix.Viajes.dto.ListadoByPasajeroIdRequestDto;
 import elementary.Rutix.Viajes.dto.PagoDto;
 import elementary.Rutix.Viajes.dto.ReservaDto;
 import elementary.Rutix.Viajes.dto.ViajeDto;
@@ -16,6 +18,7 @@ import elementary.Rutix.common.dto.ConsultaListadoRequestDto;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -35,7 +38,7 @@ public class ReservaController {
 
         private final RegistrarPagoDeReservaComando registrarPago;
         private final EliminarPagoDeReservaComando eliminarPago;
-
+        private final ListadoByPasajeroIdConsulta listadoByPasajeroIdConsulta;
         private static final Logger logger = LoggerFactory.getLogger(elementary.Rutix.Viajes.ViajeController.class);
 
 
@@ -45,7 +48,8 @@ public class ReservaController {
                              BuscarIdReservaConsulta buscar,
                              ActualizarReservaDeViajeComando actualizar,
                              RegistrarPagoDeReservaComando registrarPago,
-                             EliminarPagoDeReservaComando eliminarPago) {
+                             EliminarPagoDeReservaComando eliminarPago,
+                             ListadoByPasajeroIdConsulta listadoByPasajeroIdConsulta) {
         this.registrar = registrar;
         this.eliminar = eliminar;
         this.listar = listar;
@@ -53,6 +57,7 @@ public class ReservaController {
         this.actualizar = actualizar;
         this.registrarPago = registrarPago;
         this.eliminarPago = eliminarPago;
+        this.listadoByPasajeroIdConsulta = listadoByPasajeroIdConsulta;
     }
 
     @GetMapping()
@@ -63,6 +68,15 @@ public class ReservaController {
         if (resultset.isEmpty()){
             return ResponseEntity.noContent().build();
         }
+        return ResponseEntity.ok(resultset);
+    }
+    @GetMapping("/findByPasajeroIdOrderByIdDesc")
+    public ResponseEntity<Page<ReservaDto>> findByPasajeroIdOrderByIdDesc (
+            @RequestParam(value="pasajeroId", required = true) Long pasajeroId,
+            @RequestParam(value = "limit", required = false, defaultValue = "25") int limit,
+            @RequestParam(value = "offset", required = false, defaultValue = "0") Long offset){
+        Page<ReservaDto> resultset = this.listadoByPasajeroIdConsulta.execute(new ListadoByPasajeroIdRequestDto(pasajeroId, offset, limit));
+
         return ResponseEntity.ok(resultset);
     }
 

@@ -71,6 +71,7 @@ public class ViajeController {
         }
         return ResponseEntity.ok(resultset);
     }
+
     @GetMapping(value="/{id}")
     public ResponseEntity<ViajeDto> view(@PathVariable("id") Long id){
         ViajeDto registro =  buscarIdViajeUseCase.execute(id);

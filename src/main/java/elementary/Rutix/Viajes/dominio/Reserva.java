@@ -35,7 +35,7 @@ public class Reserva {
 
 
 
-    @OneToMany(mappedBy = "reserva",  cascade = CascadeType.ALL, fetch = FetchType.EAGER,orphanRemoval = true)
+    @OneToMany(mappedBy = "reserva",  cascade = CascadeType.ALL, fetch = FetchType.LAZY,orphanRemoval = true)
     private List<Pago> listaPagos = new ArrayList<Pago>();
 
     private Integer cantidadLugares;

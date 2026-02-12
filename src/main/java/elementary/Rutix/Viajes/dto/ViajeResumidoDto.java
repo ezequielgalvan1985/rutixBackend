@@ -49,8 +49,6 @@ public class ViajeResumidoDto {
 
     private VehiculoDto vehiculo;
 
-    private List<ReservaDto> listaReservas = new ArrayList<ReservaDto>();
-
     @Max(value=30,message="Cantidad maxima permitida 30")
     private Integer lugaresTotales;
 
