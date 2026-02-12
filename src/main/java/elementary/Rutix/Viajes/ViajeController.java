@@ -77,11 +77,8 @@ public class ViajeController {
     }
 
     @PostMapping("/buscar")
-    public ResponseEntity<List<BuscarViajesResponseConsultaDto>> buscarViajesConsulta (@RequestBody BuscarViajesRequestConsultaDto request){
-        List<BuscarViajesResponseConsultaDto> resultset = this.buscarViajesConsulta.execute(request);
-        if (resultset.isEmpty()){
-            return ResponseEntity.noContent().build();
-        }
+    public ResponseEntity<Page<ViajeResumidoDto>> buscarViajesConsulta (@RequestBody BuscarViajesRequestConsultaDto request){
+        Page<ViajeResumidoDto> resultset = this.buscarViajesConsulta.execute(request);
         return ResponseEntity.ok(resultset);
     }
 

@@ -63,6 +63,8 @@ public class ListadoMisViajesConductorConsulta implements Consulta<ConsultaLista
                 .horaLlegada(r.getHoraLlegada())
                 .estado(r.getEstado())
                 .valor(r.getValor())
+                .porcentajeSenia(r.getPorcentajeSenia())
+                .pagaSenia(r.getPagaSenia())
                 .conductor(modelMapper.map(r.getConductor(), PerfilRutixResumidoDto.class))
                 .vehiculo(modelMapper.map(r.getVehiculo(), VehiculoDto.class))
                 .build();
