@@ -44,11 +44,8 @@ public class RegistrarViajeComando implements Comando<RegistrarViajeRequestComan
     @Override
     public ViajeResumidoDto execute(RegistrarViajeRequestComandoDto input) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        Long perfilId = Long.parseLong(auth.getName());
-
-        //validaciones
-        //this.perfilConCuentaHabilitadaReglaNegocio.aplicar(perfilId);
-        //this.perfilConVehiculoHabilitadoReglaNegocio.aplicar(perfilId);
+        Long uid = Long.parseLong(auth.getName());
+        PerfilRutix p = repoPerfil.findByUsuarioId(uid).orElseThrow(() -> new ReglaNegocioException("No se encontró el perfil"));
 
         //MAPEO
         Viaje v = new Viaje();
@@ -57,8 +54,6 @@ public class RegistrarViajeComando implements Comando<RegistrarViajeRequestComan
         v.setHoraLlegada(input.getHoraLlegada());
         v.setCiudadPartida(input.getCiudadPartida());
         v.setCiudadDestino(input.getCiudadDestino());
-        PerfilRutix p = repoPerfil.findById(perfilId)
-                .orElseThrow(() -> new ReglaNegocioException("No se encontró el perfil"));
         v.setConductor(p);
         Vehiculo vx = p.getListaVehiculos().stream()
                 .filter(ve -> ve.getId().equals(input.getVehiculoId()))

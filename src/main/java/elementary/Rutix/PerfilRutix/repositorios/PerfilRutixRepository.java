@@ -8,10 +8,12 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface PerfilRutixRepository extends JpaRepository<PerfilRutix, Long> {
     @Query(value = "SELECT m FROM PerfilRutix m WHERE m.id > :offset ORDER BY m.id DESC")
     List<PerfilRutix> findAll(@Param("offset") Long offset, Pageable pageable);
 
+    Optional<PerfilRutix> findByUsuarioId(Long usuarioId);
 }

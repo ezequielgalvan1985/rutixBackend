@@ -32,4 +32,7 @@ public class ListadoReservasConsulta implements Consulta<ConsultaListadoRequestD
                 .map(model->modelMapper.map(model, ReservaDto.class))
                 .collect(Collectors.toList());
     }
+
+
+
 }

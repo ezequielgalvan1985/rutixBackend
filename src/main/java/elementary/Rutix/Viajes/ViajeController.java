@@ -7,12 +7,14 @@ import elementary.Rutix.Viajes.comandos.EliminarViajeComando;
 import elementary.Rutix.Viajes.comandos.RegistrarViajeComando;
 import elementary.Rutix.Viajes.consultas.BuscarIdViajeConsulta;
 import elementary.Rutix.Viajes.consultas.BuscarViajesConsulta;
+import elementary.Rutix.Viajes.consultas.ListadoMisViajesConductorConsulta;
 import elementary.Rutix.Viajes.consultas.ListadoViajeConsulta;
 import elementary.Rutix.Viajes.dto.*;
 import elementary.Rutix.common.dto.ConsultaListadoRequestDto;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -31,6 +33,8 @@ public class ViajeController {
     private final EliminarViajeComando eliminarViajeUseCase;
     private final BuscarIdViajeConsulta buscarIdViajeUseCase;
     private final BuscarViajesConsulta buscarViajesConsulta;
+    private final ListadoMisViajesConductorConsulta listadoMisViajesConductorConsulta;
+
 
     private static final Logger logger = LoggerFactory.getLogger(ViajeController.class);
 
@@ -41,7 +45,8 @@ public class ViajeController {
                            ListadoViajeConsulta listadoViajeUseCase,
                            RegistrarReservaEnViajeComando registrarReservaEnViajeUseCase,
                            EliminarReservaDeViajeComando eliminarReservaDeViajeUseCase,
-                           BuscarViajesConsulta buscarViajesConsulta
+                           BuscarViajesConsulta buscarViajesConsulta,
+                           ListadoMisViajesConductorConsulta listadoMisViajesConductorConsulta
                            ){
         this.registrarViajeUseCase = registrarViajeUseCase;
         this.actualizarViajeUseCase = actualizarViajeUseCase;
@@ -49,7 +54,15 @@ public class ViajeController {
         this.buscarIdViajeUseCase = buscarViajeUseCase;
         this.listadoViajeUseCase = listadoViajeUseCase;
         this.buscarViajesConsulta = buscarViajesConsulta;
+        this.listadoMisViajesConductorConsulta = listadoMisViajesConductorConsulta;
+    }
 
+    @GetMapping("/listado/misviajes/conductor")
+    public ResponseEntity<Page<ViajeResumidoDto>> listadoMisViajesConductorConsulta (
+            @RequestParam(value = "limit", required = false, defaultValue = "25") int limit,
+            @RequestParam(value = "offset", required = false, defaultValue = "0") Long offset){
+        Page<ViajeResumidoDto> resultset = this.listadoMisViajesConductorConsulta.execute(new ConsultaListadoRequestDto(offset,limit));
+        return ResponseEntity.ok(resultset);
     }
 
     @GetMapping()
