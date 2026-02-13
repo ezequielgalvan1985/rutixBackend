@@ -30,5 +30,6 @@ public class ReservaDto {
     private LocalDateTime fechaAlta;
 
     private LocalDateTime fechaPuntaje;
+
     private Integer puntaje;
 }

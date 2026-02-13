@@ -2,13 +2,14 @@ package elementary.Rutix.Viajes;
 
 import elementary.Rutix.Viajes.comandos.dto.EliminarPagoDeReservaComandoDto;
 import elementary.Rutix.Viajes.comandos.dto.EliminarReservaDeViajeComandoDto;
+import elementary.Rutix.Viajes.comandos.dto.RegistrarReservaDto;
 import elementary.Rutix.Viajes.comandos.pagos.EliminarPagoDeReservaComando;
 import elementary.Rutix.Viajes.comandos.pagos.RegistrarPagoDeReservaComando;
 import elementary.Rutix.Viajes.comandos.reservas.ActualizarReservaDeViajeComando;
 import elementary.Rutix.Viajes.comandos.reservas.EliminarReservaDeViajeComando;
 import elementary.Rutix.Viajes.comandos.reservas.RegistrarReservaEnViajeComando;
 import elementary.Rutix.Viajes.consultas.reservas.BuscarIdReservaConsulta;
-import elementary.Rutix.Viajes.consultas.reservas.ListadoByPasajeroIdConsulta;
+import elementary.Rutix.Viajes.consultas.reservas.MisReservasConsulta;
 import elementary.Rutix.Viajes.consultas.reservas.ListadoReservasConsulta;
 import elementary.Rutix.Viajes.dto.ListadoByPasajeroIdRequestDto;
 import elementary.Rutix.Viajes.dto.PagoDto;
@@ -38,7 +39,7 @@ public class ReservaController {
 
         private final RegistrarPagoDeReservaComando registrarPago;
         private final EliminarPagoDeReservaComando eliminarPago;
-        private final ListadoByPasajeroIdConsulta listadoByPasajeroIdConsulta;
+        private final MisReservasConsulta listadoByPasajeroIdConsulta;
         private static final Logger logger = LoggerFactory.getLogger(elementary.Rutix.Viajes.ViajeController.class);
 
 
@@ -49,7 +50,7 @@ public class ReservaController {
                              ActualizarReservaDeViajeComando actualizar,
                              RegistrarPagoDeReservaComando registrarPago,
                              EliminarPagoDeReservaComando eliminarPago,
-                             ListadoByPasajeroIdConsulta listadoByPasajeroIdConsulta) {
+                             MisReservasConsulta listadoByPasajeroIdConsulta) {
         this.registrar = registrar;
         this.eliminar = eliminar;
         this.listar = listar;
@@ -89,7 +90,7 @@ public class ReservaController {
 
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<ViajeDto> add(@RequestBody @Valid ReservaDto m, @RequestHeader("X-User-Name") String username) throws IOException, TimeoutException, IOException, TimeoutException {
+    public ResponseEntity<ReservaDto> add(@RequestBody @Valid RegistrarReservaDto m) throws IOException, TimeoutException, IOException, TimeoutException {
         return ResponseEntity.ok(registrar.execute(m));
     }
 

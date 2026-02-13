@@ -12,15 +12,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
-public class ListadoByPasajeroIdConsulta implements Consulta<ListadoByPasajeroIdRequestDto, Page<ReservaDto>> {
+public class MisReservasConsulta implements Consulta<ListadoByPasajeroIdRequestDto, Page<ReservaDto>> {
 
     private ReservaRepository repo;
     private ModelMapper modelMapper;
 
-    public ListadoByPasajeroIdConsulta(ReservaRepository r,ModelMapper modelMapper){
+    public MisReservasConsulta(ReservaRepository r, ModelMapper modelMapper){
         this.repo = r;
         this.modelMapper = modelMapper;
     }

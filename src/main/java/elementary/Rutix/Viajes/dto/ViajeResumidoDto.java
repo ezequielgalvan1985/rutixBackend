@@ -50,6 +50,7 @@ public class ViajeResumidoDto {
     @Max(value=30,message="Cantidad maxima permitida 30")
     private Integer lugaresTotales;
 
+    private Integer lugaresDisponibles;
 
     private boolean pagaSenia;
 

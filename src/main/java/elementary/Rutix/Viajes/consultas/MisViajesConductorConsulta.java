@@ -22,16 +22,16 @@ import org.springframework.stereotype.Service;
 
 
 @Service
-public class ListadoMisViajesConductorConsulta implements Consulta<ConsultaListadoRequestDto, PageResponseDto<ViajeResumidoDto>> {
+public class MisViajesConductorConsulta implements Consulta<ConsultaListadoRequestDto, PageResponseDto<ViajeResumidoDto>> {
 
     private ModelMapper modelMapper;
     private ViajeRepository repo;
     private PerfilRutixRepository repoPerfil;
 
 
-    public ListadoMisViajesConductorConsulta(ModelMapper modelMapper,
-                                             ViajeRepository repo,
-                                             PerfilRutixRepository repoPerfil
+    public MisViajesConductorConsulta(ModelMapper modelMapper,
+                                      ViajeRepository repo,
+                                      PerfilRutixRepository repoPerfil
     ) {
         this.modelMapper = modelMapper;
         this.repo = repo;
@@ -64,6 +64,7 @@ public class ListadoMisViajesConductorConsulta implements Consulta<ConsultaLista
     private ViajeResumidoDto toDto(Viaje r) {
         ViajeResumidoDto dto = new ViajeResumidoDto()
                 .builder()
+                .id(r.getId())
                 .ciudadPartida(r.getCiudadPartida())
                 .ciudadDestino(r.getCiudadDestino())
                 .fechaSalida(r.getFechaSalida())
@@ -75,6 +76,8 @@ public class ListadoMisViajesConductorConsulta implements Consulta<ConsultaLista
                 .pagaSenia(r.getPagaSenia())
                 .conductor(modelMapper.map(r.getConductor(), PerfilRutixResumidoDto.class))
                 .vehiculo(modelMapper.map(r.getVehiculo(), VehiculoDto.class))
+                .lugaresDisponibles(r.getLugaresDisponibles())
+                .lugaresTotales(r.getLugaresTotales())
                 .build();
         return dto;
     }

@@ -7,7 +7,7 @@ import elementary.Rutix.Viajes.comandos.EliminarViajeComando;
 import elementary.Rutix.Viajes.comandos.RegistrarViajeComando;
 import elementary.Rutix.Viajes.consultas.BuscarIdViajeConsulta;
 import elementary.Rutix.Viajes.consultas.BuscarViajesConsulta;
-import elementary.Rutix.Viajes.consultas.ListadoMisViajesConductorConsulta;
+import elementary.Rutix.Viajes.consultas.MisViajesConductorConsulta;
 import elementary.Rutix.Viajes.consultas.ListadoViajeConsulta;
 import elementary.Rutix.Viajes.dto.*;
 import elementary.Rutix.common.dto.ConsultaListadoRequestDto;
@@ -15,7 +15,6 @@ import elementary.Rutix.common.dto.PageResponseDto;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -34,7 +33,7 @@ public class ViajeController {
     private final EliminarViajeComando eliminarViajeUseCase;
     private final BuscarIdViajeConsulta buscarIdViajeUseCase;
     private final BuscarViajesConsulta buscarViajesConsulta;
-    private final ListadoMisViajesConductorConsulta listadoMisViajesConductorConsulta;
+    private final MisViajesConductorConsulta listadoMisViajesConductorConsulta;
 
 
     private static final Logger logger = LoggerFactory.getLogger(ViajeController.class);
@@ -47,7 +46,7 @@ public class ViajeController {
                            RegistrarReservaEnViajeComando registrarReservaEnViajeUseCase,
                            EliminarReservaDeViajeComando eliminarReservaDeViajeUseCase,
                            BuscarViajesConsulta buscarViajesConsulta,
-                           ListadoMisViajesConductorConsulta listadoMisViajesConductorConsulta
+                           MisViajesConductorConsulta listadoMisViajesConductorConsulta
                            ){
         this.registrarViajeUseCase = registrarViajeUseCase;
         this.actualizarViajeUseCase = actualizarViajeUseCase;
