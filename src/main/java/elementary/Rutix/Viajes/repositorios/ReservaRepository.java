@@ -13,8 +13,8 @@ import java.util.List;
 
 @Repository
 public interface ReservaRepository extends JpaRepository<Reserva,Long> {
-    @Query(value = "SELECT m FROM Reserva m WHERE m.id > :offset ORDER BY m.id DESC")
-    List<Reserva> findAll(@Param("offset") Long offset, Pageable pageable);
+
+    Page<Reserva> findAll(Pageable pageable);
 
     Page<Reserva> findByPasajeroIdOrderByIdDesc(Long pasajeroId, Pageable pageable);
 }

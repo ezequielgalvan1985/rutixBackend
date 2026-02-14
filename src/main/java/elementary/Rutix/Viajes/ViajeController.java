@@ -82,7 +82,7 @@ public class ViajeController {
         return ResponseEntity.ok(resultset);
     }
 
-    @GetMapping(value="/{id}")
+    @GetMapping(value="/buscarId/{id}")
     public ResponseEntity<ViajeDto> view(@PathVariable("id") Long id){
         ViajeDto registro =  buscarIdViajeUseCase.execute(id);
         return ResponseEntity.ok(registro);

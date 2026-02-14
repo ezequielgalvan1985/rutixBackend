@@ -1,5 +1,6 @@
 package elementary.Rutix.Viajes;
 
+import elementary.Rutix.Viajes.comandos.dto.ActualizarReservaDeViajeDto;
 import elementary.Rutix.Viajes.comandos.dto.EliminarPagoDeReservaComandoDto;
 import elementary.Rutix.Viajes.comandos.dto.EliminarReservaDeViajeComandoDto;
 import elementary.Rutix.Viajes.comandos.dto.RegistrarReservaDto;
@@ -16,6 +17,7 @@ import elementary.Rutix.Viajes.dto.PagoDto;
 import elementary.Rutix.Viajes.dto.ReservaDto;
 import elementary.Rutix.Viajes.dto.ViajeDto;
 import elementary.Rutix.common.dto.ConsultaListadoRequestDto;
+import elementary.Rutix.common.dto.PageResponseDto;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -62,13 +64,11 @@ public class ReservaController {
     }
 
     @GetMapping()
-    public ResponseEntity<List<ReservaDto>> findAll (
+    public ResponseEntity<PageResponseDto<ReservaDto>> findAll (
             @RequestParam(value = "limit", required = false, defaultValue = "25") int limit,
             @RequestParam(value = "offset", required = false, defaultValue = "0") Long offset){
-        List<ReservaDto> resultset = this.listar.execute(new ConsultaListadoRequestDto(offset,limit));
-        if (resultset.isEmpty()){
-            return ResponseEntity.noContent().build();
-        }
+        PageResponseDto<ReservaDto> resultset = this.listar.execute(new ConsultaListadoRequestDto(offset,limit));
+
         return ResponseEntity.ok(resultset);
     }
     @GetMapping("/findByPasajeroIdOrderByIdDesc")
@@ -95,7 +95,7 @@ public class ReservaController {
     }
 
     @PutMapping()
-    public void edit( @RequestBody @Valid  ReservaDto dto){
+    public void edit( @RequestBody @Valid ActualizarReservaDeViajeDto dto){
         actualizar.execute(dto);
     }
 
