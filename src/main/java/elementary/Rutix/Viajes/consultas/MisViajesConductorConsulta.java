@@ -76,8 +76,9 @@ public class MisViajesConductorConsulta implements Consulta<ConsultaListadoReque
                 .pagaSenia(r.getPagaSenia())
                 .conductor(modelMapper.map(r.getConductor(), PerfilRutixResumidoDto.class))
                 .vehiculo(modelMapper.map(r.getVehiculo(), VehiculoDto.class))
-                .lugaresDisponibles(r.getLugaresDisponibles())
-                .lugaresTotales(r.getLugaresTotales())
+                .asientos(r.getAsientos())
+                .asientosDisponibles(r.getAsientosDisponibles())
+                .asientosReservados(r.getAsientosReservados())
                 .build();
         return dto;
     }

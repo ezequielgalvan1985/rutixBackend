@@ -39,15 +39,16 @@ public class RegistrarReservaEnViajeComando implements Comando<RegistrarReservaD
         Long uid = Long.parseLong(auth.getName());
         PerfilRutix p = repoPerfil.findByUsuarioId(uid).orElseThrow(() -> new ReglaNegocioException("No se encontró el perfil"));
         Viaje v = this.repoViaje.findById(value.getViajeId()).orElseThrow(()->new ReglaNegocioException("Viaje Inexistente"));
-        if (v.getLugaresDisponibles() < value.getCantidadLugares()) throw new ReglaNegocioException("No hay lugares disponibles");
+        if (v.getAsientosDisponibles() < value.getAsientos()) throw new ReglaNegocioException("No hay Asientos disponibles");
 
         Reserva r = Reserva.builder()
                 .pasajero(p)
                 .viaje(v)
-                .cantidadLugares(value.getCantidadLugares())
+                .asientos(value.getAsientos())
                 .estado(EstadoReserva.PENDIENTE)
                 .build();
-
+        v.setAsientosReservados(v.getAsientosReservados()+value.getAsientos());
+        v.setAsientosDisponibles(v.getAsientos()-v.getAsientosReservados());
         v.registrarReserva(r);
         repoViaje.save(v);
         return this.modelMapper.map(r, ReservaDto.class);

@@ -44,7 +44,7 @@ public class RegistrarViajeRequestComandoDto {
     private Long vehiculoId;
 
     @Max(value=30,message="Cantidad maxima permitida 30")
-    private Integer lugaresTotales;
+    private Integer asientos;
 
     private Boolean pagaSenia;
 

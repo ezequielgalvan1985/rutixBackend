@@ -54,7 +54,7 @@ public class Viaje {
 
 
     @Column(nullable = false)
-    private Integer lugaresTotales;
+    private Integer asientos;
 
     private Boolean pagaSenia;
 
@@ -66,12 +66,10 @@ public class Viaje {
     @Enumerated(EnumType.STRING)
     private EstadoViajeEnum estado;
 
-    public Integer getLugaresReservados(){
-        return this.listaReservas.size();
-    }
-    public Integer getLugaresDisponibles(){
-        return this.lugaresTotales - this.getLugaresReservados();
-    }
+
+    private Integer asientosDisponibles;
+
+    private Integer asientosReservados;
 
     @Column(updatable = false)
     private LocalDateTime fechaAlta;

@@ -62,6 +62,11 @@ public class ViajeDto {
 
     private EstadoViajeEnum estado;
 
+    private Integer asientos;
+
+    private Integer asientosDisponibles;
+
+    private Integer asientosReservados;
 
 
 }

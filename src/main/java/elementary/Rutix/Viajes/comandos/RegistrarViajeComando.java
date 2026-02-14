@@ -61,12 +61,13 @@ public class RegistrarViajeComando implements Comando<RegistrarViajeRequestComan
                 .orElseThrow(() -> new ReglaNegocioException("El vehículo no pertenece al perfil"));
 
         v.setVehiculo(vx);
-        v.setLugaresTotales(input.getLugaresTotales());
+        v.setAsientos(input.getAsientos());
         v.setPagaSenia(input.getPagaSenia());
         v.setPorcentajeSenia(input.getPorcentajeSenia());
         v.setValor(input.getValor());
         v.setEstado(EstadoViajeEnum.valueOf("CREADO"));
-
+        v.setAsientosDisponibles(v.getAsientos());
+        v.setAsientosReservados(0);
         Viaje viaje = this.repo.save(v);
 
         //Respuesta

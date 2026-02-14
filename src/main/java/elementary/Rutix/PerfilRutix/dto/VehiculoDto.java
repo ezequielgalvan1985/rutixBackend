@@ -40,4 +40,6 @@ public class VehiculoDto {
     @NotNull
     private Boolean activo;
 
+    private Integer asientos;
+
 }

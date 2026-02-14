@@ -48,9 +48,11 @@ public class ViajeResumidoDto {
     private VehiculoDto vehiculo;
 
     @Max(value=30,message="Cantidad maxima permitida 30")
-    private Integer lugaresTotales;
+    private Integer asientos;
 
-    private Integer lugaresDisponibles;
+    private Integer asientosDisponibles;
+
+    private Integer asientosReservados;
 
     private boolean pagaSenia;
 

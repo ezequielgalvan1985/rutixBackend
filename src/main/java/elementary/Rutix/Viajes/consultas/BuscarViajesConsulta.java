@@ -39,7 +39,7 @@ public class BuscarViajesConsulta implements Consulta<BuscarViajesRequestConsult
                 Sort.by(Sort.Direction.DESC, "id")
         );
 
-        Page<Viaje> result = this.repo.buscarViajes(input.getFechaSalida(), input.getCiudadPartida(), input.getCiudadDestino(), input.getOffset(), pageable);
+        Page<Viaje> result = this.repo.buscarViajes(input.getFechaSalida(), input.getCiudadPartida(), input.getCiudadDestino(),  pageable);
         return PageResponseDto.<ViajeResumidoDto>builder()
                 .data(result.map(this::toDto).getContent())
                 .page(result.getNumber())
@@ -63,6 +63,9 @@ public class BuscarViajesConsulta implements Consulta<BuscarViajesRequestConsult
                 .pagaSenia(r.getPagaSenia())
                 .conductor(modelMapper.map(r.getConductor(), PerfilRutixResumidoDto.class))
                 .vehiculo(modelMapper.map(r.getVehiculo(), VehiculoDto.class))
+                .asientosReservados(r.getAsientosReservados())
+                .asientosDisponibles(r.getAsientosDisponibles())
+                .asientos(r.getAsientos())
                 .build();
         return dto;
     }

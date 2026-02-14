@@ -11,6 +11,6 @@ import lombok.Setter;
 @AllArgsConstructor
 public class RegistrarReservaDto {
     private Long viajeId;
-    private Integer cantidadLugares;
+    private Integer asientos;
 
 }

@@ -43,5 +43,6 @@ public class Vehiculo {
     @JoinColumn(name = "perfil_id", nullable = false)
     private PerfilRutix perfil;
 
+    private Integer asientos;
 
 }
