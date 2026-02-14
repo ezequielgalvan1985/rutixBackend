@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class ActualizarReservaDeViajeComando implements Comando<ActualizarReservaDeViajeDto, ReservaDto> {
+
     private ModelMapper modelMapper;
     private ViajeRepository repoViaje;
     private PerfilRutixRepository repoPerfil;
