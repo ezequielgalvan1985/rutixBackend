@@ -10,12 +10,11 @@ import elementary.Rutix.Viajes.comandos.reservas.ActualizarReservaDeViajeComando
 import elementary.Rutix.Viajes.comandos.reservas.EliminarReservaDeViajeComando;
 import elementary.Rutix.Viajes.comandos.reservas.RegistrarReservaEnViajeComando;
 import elementary.Rutix.Viajes.consultas.reservas.BuscarIdReservaConsulta;
-import elementary.Rutix.Viajes.consultas.reservas.MisReservasConsulta;
+import elementary.Rutix.Viajes.consultas.MisViajesDePasajeroConsulta;
 import elementary.Rutix.Viajes.consultas.reservas.ListadoReservasConsulta;
 import elementary.Rutix.Viajes.dto.ListadoByPasajeroIdRequestDto;
 import elementary.Rutix.Viajes.dto.PagoDto;
 import elementary.Rutix.Viajes.dto.ReservaDto;
-import elementary.Rutix.Viajes.dto.ViajeDto;
 import elementary.Rutix.common.dto.ConsultaListadoRequestDto;
 import elementary.Rutix.common.dto.PageResponseDto;
 import jakarta.validation.Valid;
@@ -26,7 +25,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
-import java.util.List;
 import java.util.concurrent.TimeoutException;
 
 @RestController
@@ -41,7 +39,8 @@ public class ReservaController {
 
         private final RegistrarPagoDeReservaComando registrarPago;
         private final EliminarPagoDeReservaComando eliminarPago;
-        private final MisReservasConsulta listadoByPasajeroIdConsulta;
+
+
         private static final Logger logger = LoggerFactory.getLogger(elementary.Rutix.Viajes.ViajeController.class);
 
 
@@ -51,8 +50,8 @@ public class ReservaController {
                              BuscarIdReservaConsulta buscar,
                              ActualizarReservaDeViajeComando actualizar,
                              RegistrarPagoDeReservaComando registrarPago,
-                             EliminarPagoDeReservaComando eliminarPago,
-                             MisReservasConsulta listadoByPasajeroIdConsulta) {
+                             EliminarPagoDeReservaComando eliminarPago
+                             ) {
         this.registrar = registrar;
         this.eliminar = eliminar;
         this.listar = listar;
@@ -60,7 +59,6 @@ public class ReservaController {
         this.actualizar = actualizar;
         this.registrarPago = registrarPago;
         this.eliminarPago = eliminarPago;
-        this.listadoByPasajeroIdConsulta = listadoByPasajeroIdConsulta;
     }
 
     @GetMapping()
@@ -68,15 +66,6 @@ public class ReservaController {
             @RequestParam(value = "limit", required = false, defaultValue = "25") int limit,
             @RequestParam(value = "offset", required = false, defaultValue = "0") Long offset){
         PageResponseDto<ReservaDto> resultset = this.listar.execute(new ConsultaListadoRequestDto(offset,limit));
-
-        return ResponseEntity.ok(resultset);
-    }
-    @GetMapping("/findByPasajeroIdOrderByIdDesc")
-    public ResponseEntity<Page<ReservaDto>> findByPasajeroIdOrderByIdDesc (
-            @RequestParam(value="pasajeroId", required = true) Long pasajeroId,
-            @RequestParam(value = "limit", required = false, defaultValue = "25") int limit,
-            @RequestParam(value = "offset", required = false, defaultValue = "0") Long offset){
-        Page<ReservaDto> resultset = this.listadoByPasajeroIdConsulta.execute(new ListadoByPasajeroIdRequestDto(pasajeroId, offset, limit));
 
         return ResponseEntity.ok(resultset);
     }
