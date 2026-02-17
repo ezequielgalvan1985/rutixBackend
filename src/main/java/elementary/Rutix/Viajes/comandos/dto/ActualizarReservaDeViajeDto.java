@@ -1,7 +1,6 @@
 package elementary.Rutix.Viajes.comandos.dto;
 
-import elementary.Rutix.Viajes.dto.PagoDto;
-import elementary.Rutix.common.EstadoReserva;
+import elementary.Rutix.common.Enum.EstadoReserva;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.Max;
@@ -10,10 +9,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Getter
 @Setter

@@ -1,10 +1,9 @@
 package elementary.Rutix.PerfilRutix.dominio;
 
-import elementary.Rutix.common.MarcaTarjeta;
-import elementary.Rutix.common.TipoTarjeta;
+import elementary.Rutix.common.Enum.MarcaTarjeta;
+import elementary.Rutix.common.Enum.TipoTarjeta;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

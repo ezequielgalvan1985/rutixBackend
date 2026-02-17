@@ -2,7 +2,7 @@ package elementary.Rutix.Viajes.dominio;
 
 import elementary.Rutix.PerfilRutix.dominio.PerfilRutix;
 import elementary.Rutix.PerfilRutix.dominio.Vehiculo;
-import elementary.Rutix.common.EstadoViajeEnum;
+import elementary.Rutix.common.Enum.EstadoViajeEnum;
 import jakarta.persistence.*;
 import lombok.*;
 

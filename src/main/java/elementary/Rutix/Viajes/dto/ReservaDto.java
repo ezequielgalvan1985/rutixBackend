@@ -1,7 +1,6 @@
 package elementary.Rutix.Viajes.dto;
 
-import elementary.Rutix.Viajes.dominio.Pago;
-import elementary.Rutix.common.EstadoReserva;
+import elementary.Rutix.common.Enum.EstadoReserva;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.Max;

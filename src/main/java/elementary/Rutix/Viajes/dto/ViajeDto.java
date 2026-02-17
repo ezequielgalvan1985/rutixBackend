@@ -1,20 +1,14 @@
 package elementary.Rutix.Viajes.dto;
 
-import elementary.Rutix.PerfilRutix.dominio.Vehiculo;
 import elementary.Rutix.PerfilRutix.dto.PerfilRutixDto;
 import elementary.Rutix.PerfilRutix.dto.VehiculoDto;
-import elementary.Rutix.Viajes.dominio.Reserva;
 import elementary.Rutix.common.validators.interfaces.ValidFechaSalidaViaje;
-import elementary.Rutix.common.EstadoViajeEnum;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.OneToMany;
+import elementary.Rutix.common.Enum.EstadoViajeEnum;
 import jakarta.validation.constraints.*;
 import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;

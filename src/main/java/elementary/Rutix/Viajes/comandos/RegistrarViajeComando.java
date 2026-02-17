@@ -7,10 +7,9 @@ import elementary.Rutix.PerfilRutix.utlis.reglas.policy.PerfilConCuentaHabilitad
 import elementary.Rutix.PerfilRutix.utlis.reglas.policy.PerfilConVehiculoHabilitadoReglaNegocio;
 import elementary.Rutix.Viajes.dominio.Viaje;
 import elementary.Rutix.Viajes.dto.RegistrarViajeRequestComandoDto;
-import elementary.Rutix.Viajes.dto.ViajeDto;
 import elementary.Rutix.Viajes.dto.ViajeResumidoDto;
 import elementary.Rutix.Viajes.repositorios.ViajeRepository;
-import elementary.Rutix.common.EstadoViajeEnum;
+import elementary.Rutix.common.Enum.EstadoViajeEnum;
 import elementary.Rutix.common.excepciones.ReglaNegocioException;
 import elementary.Rutix.common.interfaces.Comando;
 import org.modelmapper.ModelMapper;

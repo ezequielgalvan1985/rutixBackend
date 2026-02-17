@@ -3,7 +3,7 @@ package elementary.Rutix.Viajes.consultas.dto;
 import elementary.Rutix.PerfilRutix.dto.PerfilRutixResumidoDto;
 import elementary.Rutix.PerfilRutix.dto.VehiculoDto;
 import elementary.Rutix.Viajes.dto.ViajeResumidoDto;
-import elementary.Rutix.common.EstadoReserva;
+import elementary.Rutix.common.Enum.EstadoReserva;
 import lombok.Getter;
 import lombok.Setter;
 

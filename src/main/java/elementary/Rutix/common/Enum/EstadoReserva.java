@@ -1,4 +1,4 @@
-package elementary.Rutix.common;
+package elementary.Rutix.common.Enum;
 
 public enum EstadoReserva {
     CANCELADA,

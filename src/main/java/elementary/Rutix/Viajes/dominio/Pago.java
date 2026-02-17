@@ -1,8 +1,7 @@
 package elementary.Rutix.Viajes.dominio;
 
-import elementary.Rutix.PerfilRutix.dominio.PerfilRutix;
-import elementary.Rutix.common.EstadoPagoEnum;
-import elementary.Rutix.common.MetodoPagoEnum;
+import elementary.Rutix.common.Enum.EstadoPagoEnum;
+import elementary.Rutix.common.Enum.MetodoPagoEnum;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;

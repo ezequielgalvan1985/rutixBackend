@@ -1,8 +1,7 @@
 package elementary.Rutix.Viajes.dto;
 
-import elementary.Rutix.PerfilRutix.dto.PerfilRutixDto;
 import elementary.Rutix.PerfilRutix.dto.PerfilRutixResumidoDto;
-import elementary.Rutix.common.EstadoViajeEnum;
+import elementary.Rutix.common.Enum.EstadoViajeEnum;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

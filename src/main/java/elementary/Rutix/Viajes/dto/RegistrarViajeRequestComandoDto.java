@@ -1,9 +1,6 @@
 package elementary.Rutix.Viajes.dto;
 
-import com.google.errorprone.annotations.NoAllocation;
-import elementary.Rutix.PerfilRutix.dominio.Vehiculo;
-import elementary.Rutix.PerfilRutix.dto.PerfilRutixDto;
-import elementary.Rutix.common.EstadoViajeEnum;
+import elementary.Rutix.common.Enum.EstadoViajeEnum;
 import elementary.Rutix.common.validators.interfaces.ValidFechaSalidaViaje;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -17,8 +14,6 @@ import lombok.Setter;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Getter
 @Setter

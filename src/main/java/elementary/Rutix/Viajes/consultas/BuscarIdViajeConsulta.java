@@ -1,29 +1,83 @@
 package elementary.Rutix.Viajes.consultas;
 
-import elementary.Rutix.Viajes.dto.ViajeDto;
+import elementary.Rutix.PerfilRutix.dominio.PerfilRutix;
+import elementary.Rutix.PerfilRutix.dto.PerfilRutixResumidoDto;
+import elementary.Rutix.PerfilRutix.dto.VehiculoDto;
+import elementary.Rutix.PerfilRutix.repositorios.PerfilRutixRepository;
+import elementary.Rutix.Viajes.consultas.dto.ViajeDetalleDto;
 import elementary.Rutix.Viajes.dominio.Viaje;
 import elementary.Rutix.Viajes.repositorios.ViajeRepository;
+import elementary.Rutix.common.Enum.ReservaAccionEnum;
 import elementary.Rutix.common.excepciones.NoEncontradoException;
+import elementary.Rutix.common.excepciones.ReglaNegocioException;
 import elementary.Rutix.common.interfaces.Consulta;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
-public class BuscarIdViajeConsulta implements Consulta<Long, ViajeDto> {
+public class BuscarIdViajeConsulta implements Consulta<Long, ViajeDetalleDto> {
     private ModelMapper modelMapper;
     private ViajeRepository repo;
+    private final PerfilRutixRepository repoPerfil;
 
-
-    public BuscarIdViajeConsulta(ModelMapper modelMapper, ViajeRepository repo
+    public BuscarIdViajeConsulta(ModelMapper modelMapper,
+                                 ViajeRepository repo,
+                                 PerfilRutixRepository repoPerfil
                     ) {
         this.modelMapper = modelMapper;
         this.repo = repo;
-
+        this.repoPerfil = repoPerfil;
     }
 
     @Override
-    public ViajeDto execute(Long value) {
-        Viaje entity =  repo.findById(value).orElseThrow(()-> new NoEncontradoException("Viaje Inexistente: "+ value.toString()));
-        return this.modelMapper.map(entity, ViajeDto.class);
+    public ViajeDetalleDto execute(Long value) {
+        //Obtener mi perfil
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Long uid = Long.parseLong(auth.getName());
+        PerfilRutix p = repoPerfil.findByUsuarioId(uid).orElseThrow(() -> new ReglaNegocioException("No se encontró el perfil"));
+        Viaje r =  repo.findById(value).orElseThrow(()-> new NoEncontradoException("Viaje Inexistente: "+ value.toString()));
+        ViajeDetalleDto dto = new ViajeDetalleDto()
+                .builder()
+                .id(r.getId())
+                .ciudadPartida(r.getCiudadPartida())
+                .ciudadDestino(r.getCiudadDestino())
+                .fechaSalida(r.getFechaSalida())
+                .horaSalida(r.getHoraSalida())
+                .horaLlegada(r.getHoraLlegada())
+                .estado(r.getEstado())
+                .valor(r.getValor())
+                .porcentajeSenia(r.getPorcentajeSenia())
+                .pagaSenia(r.getPagaSenia())
+                .conductor(modelMapper.map(r.getConductor(), PerfilRutixResumidoDto.class))
+                .vehiculo(modelMapper.map(r.getVehiculo(), VehiculoDto.class))
+                .asientos(r.getAsientos())
+                .accionesDisponibles(this.getListaAcciones(r,p))
+                .asientosDisponibles(r.getAsientosDisponibles())
+                .asientosReservados(r.getAsientosReservados())
+                .build();
+
+        return dto;
     }
+
+    private List<String>getListaAcciones(Viaje v, PerfilRutix p){
+        List<String> lista = new ArrayList<>();
+        //si EL conductor esta viendo el detalle del viaje
+        if (v.getConductor().getId() == p.getId()){
+            lista.add(ReservaAccionEnum.CONFIRMAR.name());
+            lista.add(ReservaAccionEnum.RECHAZAR.name());
+        }else{
+            lista.add(ReservaAccionEnum.RESERVAR.name());
+            lista.add(ReservaAccionEnum.CANCELAR.name());
+            lista.add(ReservaAccionEnum.PAGAR.name());
+        }
+        return lista;
+    }
+
+
+
 }

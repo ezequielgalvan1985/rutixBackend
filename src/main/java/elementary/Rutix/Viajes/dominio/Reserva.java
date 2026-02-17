@@ -1,8 +1,7 @@
 package elementary.Rutix.Viajes.dominio;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import elementary.Rutix.PerfilRutix.dominio.PerfilRutix;
-import elementary.Rutix.common.EstadoReserva;
+import elementary.Rutix.common.Enum.EstadoReserva;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;

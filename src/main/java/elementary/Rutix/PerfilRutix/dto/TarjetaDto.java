@@ -1,7 +1,7 @@
 package elementary.Rutix.PerfilRutix.dto;
 
-import elementary.Rutix.common.MarcaTarjeta;
-import elementary.Rutix.common.TipoTarjeta;
+import elementary.Rutix.common.Enum.MarcaTarjeta;
+import elementary.Rutix.common.Enum.TipoTarjeta;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.Data;

@@ -1,16 +1,13 @@
 package elementary.Rutix.Viajes.comandos.reservas;
 
 import elementary.Rutix.PerfilRutix.dominio.PerfilRutix;
-import elementary.Rutix.PerfilRutix.dto.PerfilRutixDto;
 import elementary.Rutix.PerfilRutix.repositorios.PerfilRutixRepository;
-import elementary.Rutix.PerfilRutix.utlis.reglas.policy.PerfilExistenteReglaNegocio;
 import elementary.Rutix.Viajes.comandos.dto.RegistrarReservaDto;
 import elementary.Rutix.Viajes.dto.ReservaDto;
-import elementary.Rutix.Viajes.dto.ViajeDto;
 import elementary.Rutix.Viajes.dominio.Reserva;
 import elementary.Rutix.Viajes.dominio.Viaje;
 import elementary.Rutix.Viajes.repositorios.ViajeRepository;
-import elementary.Rutix.common.EstadoReserva;
+import elementary.Rutix.common.Enum.EstadoReserva;
 import elementary.Rutix.common.excepciones.ReglaNegocioException;
 import elementary.Rutix.common.interfaces.Comando;
 import org.modelmapper.ModelMapper;
