@@ -6,6 +6,7 @@ import elementary.Rutix.Viajes.comandos.ActualizarViajeComando;
 import elementary.Rutix.Viajes.comandos.EliminarViajeComando;
 import elementary.Rutix.Viajes.comandos.RegistrarViajeComando;
 import elementary.Rutix.Viajes.consultas.*;
+import elementary.Rutix.Viajes.consultas.dto.ViajeDetalleDto;
 import elementary.Rutix.Viajes.dto.*;
 import elementary.Rutix.common.dto.ConsultaListadoRequestDto;
 import elementary.Rutix.common.dto.PageResponseDto;
@@ -88,9 +89,9 @@ public class ViajeController {
         return ResponseEntity.ok(resultset);
     }
 
-    @GetMapping(value="/buscarId/{id}")
-    public ResponseEntity<ViajeDto> view(@PathVariable("id") Long id){
-        ViajeDto registro =  buscarIdViajeUseCase.execute(id);
+    @GetMapping(value="/{id}")
+    public ResponseEntity<ViajeDetalleDto> view(@PathVariable("id") Long id){
+        ViajeDetalleDto registro =  buscarIdViajeUseCase.execute(id);
         return ResponseEntity.ok(registro);
 
     }

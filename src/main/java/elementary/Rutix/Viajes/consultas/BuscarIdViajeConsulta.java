@@ -4,10 +4,13 @@ import elementary.Rutix.PerfilRutix.dominio.PerfilRutix;
 import elementary.Rutix.PerfilRutix.dto.PerfilRutixResumidoDto;
 import elementary.Rutix.PerfilRutix.dto.VehiculoDto;
 import elementary.Rutix.PerfilRutix.repositorios.PerfilRutixRepository;
+import elementary.Rutix.Viajes.consultas.dto.ReservaViewDto;
 import elementary.Rutix.Viajes.consultas.dto.ViajeDetalleDto;
+import elementary.Rutix.Viajes.dominio.Reserva;
 import elementary.Rutix.Viajes.dominio.Viaje;
+import elementary.Rutix.Viajes.dto.ReservaDto;
 import elementary.Rutix.Viajes.repositorios.ViajeRepository;
-import elementary.Rutix.common.Enum.ReservaAccionEnum;
+import elementary.Rutix.common.Enum.AccionEnum;
 import elementary.Rutix.common.excepciones.NoEncontradoException;
 import elementary.Rutix.common.excepciones.ReglaNegocioException;
 import elementary.Rutix.common.interfaces.Consulta;
@@ -18,6 +21,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class BuscarIdViajeConsulta implements Consulta<Long, ViajeDetalleDto> {
@@ -41,6 +45,8 @@ public class BuscarIdViajeConsulta implements Consulta<Long, ViajeDetalleDto> {
         Long uid = Long.parseLong(auth.getName());
         PerfilRutix p = repoPerfil.findByUsuarioId(uid).orElseThrow(() -> new ReglaNegocioException("No se encontró el perfil"));
         Viaje r =  repo.findById(value).orElseThrow(()-> new NoEncontradoException("Viaje Inexistente: "+ value.toString()));
+        List<ReservaViewDto> listaReservasDto = r.getListaReservas().stream().map(reserva-> modelMapper.map(reserva,ReservaViewDto.class)).toList();
+
         ViajeDetalleDto dto = new ViajeDetalleDto()
                 .builder()
                 .id(r.getId())
@@ -55,6 +61,7 @@ public class BuscarIdViajeConsulta implements Consulta<Long, ViajeDetalleDto> {
                 .pagaSenia(r.getPagaSenia())
                 .conductor(modelMapper.map(r.getConductor(), PerfilRutixResumidoDto.class))
                 .vehiculo(modelMapper.map(r.getVehiculo(), VehiculoDto.class))
+                .listaReservas(listaReservasDto)
                 .asientos(r.getAsientos())
                 .accionesDisponibles(this.getListaAcciones(r,p))
                 .asientosDisponibles(r.getAsientosDisponibles())
@@ -68,12 +75,12 @@ public class BuscarIdViajeConsulta implements Consulta<Long, ViajeDetalleDto> {
         List<String> lista = new ArrayList<>();
         //si EL conductor esta viendo el detalle del viaje
         if (v.getConductor().getId() == p.getId()){
-            lista.add(ReservaAccionEnum.CONFIRMAR.name());
-            lista.add(ReservaAccionEnum.RECHAZAR.name());
+            lista.add(AccionEnum.RESERVA_CONFIRMAR.name());
+            lista.add(AccionEnum.RESERVA_RECHAZAR.name());
         }else{
-            lista.add(ReservaAccionEnum.RESERVAR.name());
-            lista.add(ReservaAccionEnum.CANCELAR.name());
-            lista.add(ReservaAccionEnum.PAGAR.name());
+            lista.add(AccionEnum.RESERVA_REGISTRAR.name());
+            lista.add(AccionEnum.RESERVA_CANCELAR.name());
+            lista.add(AccionEnum.RESERVA_PAGAR.name());
         }
         return lista;
     }

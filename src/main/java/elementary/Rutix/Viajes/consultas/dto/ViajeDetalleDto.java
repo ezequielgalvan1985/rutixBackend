@@ -29,7 +29,7 @@ public class ViajeDetalleDto {
     private String ciudadDestino;
     private PerfilRutixResumidoDto conductor;
     private VehiculoDto vehiculo;
-    private List<ReservaDto> listaReservas = new ArrayList<ReservaDto>();
+    private List<ReservaViewDto> listaReservas = new ArrayList<ReservaViewDto>();
     private BigDecimal valor;
 
     @Enumerated(EnumType.STRING)
