@@ -38,6 +38,8 @@ public class RegistrarReservaEnViajeComando implements Comando<RegistrarReservaD
         Viaje v = this.repoViaje.findById(value.getViajeId()).orElseThrow(()->new ReglaNegocioException("Viaje Inexistente"));
         if (v.getAsientosDisponibles() < value.getAsientos()) throw new ReglaNegocioException("No hay Asientos disponibles");
 
+        //agregar restriccion, pasajero no puede ser conductor
+        if(v.getConductor().getId().equals(p.getId())) throw  new ReglaNegocioException("Conductor no puede reservar un asiento");
         Reserva r = Reserva.builder()
                 .pasajero(p)
                 .viaje(v)
