@@ -17,9 +17,8 @@ import lombok.Setter;
 public class ActualizarReservaDeViajeDto {
     private Long id;
     private Long viajeId;
-
     @Max(value=30, message="cantidad de lugares maximo permitido 30")
-    private Integer cantidadLugares;
+    private Integer asientos;
 
     @NotNull
     @Enumerated(EnumType.STRING)

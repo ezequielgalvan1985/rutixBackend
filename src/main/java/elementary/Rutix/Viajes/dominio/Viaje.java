@@ -2,7 +2,9 @@ package elementary.Rutix.Viajes.dominio;
 
 import elementary.Rutix.PerfilRutix.dominio.PerfilRutix;
 import elementary.Rutix.PerfilRutix.dominio.Vehiculo;
+import elementary.Rutix.common.Enum.EstadoReserva;
 import elementary.Rutix.common.Enum.EstadoViajeEnum;
+import elementary.Rutix.common.excepciones.ReglaNegocioException;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -80,10 +82,33 @@ public class Viaje {
     }
 
     public void registrarReserva(Reserva r ){
+        if (r == null) {
+            throw new ReglaNegocioException("La reserva no puede ser nula");
+        }
         this.listaReservas.add(r);
     }
 
     public void eliminarReserva(Long id){
-        this.listaReservas.removeIf(reserva -> reserva.getId()==id);
+        Reserva reserva = this.buscarReservaPorId(id);
+        if (reserva.getEstado() == EstadoReserva.CONFIRMADA) {
+            throw new ReglaNegocioException("No se puede eliminar una reserva confirmada");
+        }
+        this.listaReservas.remove(reserva);
+    }
+
+    public void confirmarReserva(Long id){
+        Reserva r = this.buscarReservaPorId(id);
+        r.confirmar();
+    }
+
+    public void rechazarReserva(Long id){
+        Reserva r = this.buscarReservaPorId(id);
+        r.rechazar();
+    }
+    private Reserva buscarReservaPorId(Long id) {
+        return this.listaReservas.stream()
+                .filter(reserva -> reserva.getId().equals(id))
+                .findFirst()
+                .orElseThrow(() -> new ReglaNegocioException("No existe la reserva"));
     }
 }

@@ -2,6 +2,7 @@ package elementary.Rutix.Viajes.dominio;
 
 import elementary.Rutix.PerfilRutix.dominio.PerfilRutix;
 import elementary.Rutix.common.Enum.EstadoReserva;
+import elementary.Rutix.common.excepciones.ReglaNegocioException;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -33,7 +34,6 @@ public class Reserva {
     private Viaje viaje;
 
 
-
     @OneToMany(mappedBy = "reserva",  cascade = CascadeType.ALL, fetch = FetchType.LAZY,orphanRemoval = true)
     private List<Pago> listaPagos = new ArrayList<Pago>();
 
@@ -47,6 +47,8 @@ public class Reserva {
     @Column(updatable = false)
     private LocalDateTime fechaAlta;
 
+    @Column(updatable = true)
+    private LocalDateTime fechaActualizacion;
 
     @Column(updatable = false)
     private LocalDateTime fechaPuntaje;
@@ -63,5 +65,14 @@ public class Reserva {
     }
     public void eliminarPago(Long id){
         this.listaPagos.removeIf(pago->pago.getId()==id);
+    }
+
+    public void confirmar(){
+        if(this.getEstado()!=EstadoReserva.PENDIENTE) throw new ReglaNegocioException("Solo se puede confirmar una reserva pendiente");
+        this.setEstado(EstadoReserva.CONFIRMADA);
+    }
+    public void rechazar(){
+        if(this.getEstado()!=EstadoReserva.PENDIENTE) throw new ReglaNegocioException("Solo se puede confirmar una reserva pendiente");
+        this.setEstado(EstadoReserva.RECHAZADA);
     }
 }
