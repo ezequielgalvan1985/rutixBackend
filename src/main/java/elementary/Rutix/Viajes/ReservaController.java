@@ -1,9 +1,6 @@
 package elementary.Rutix.Viajes;
 
-import elementary.Rutix.Viajes.comandos.dto.ActualizarReservaDeViajeDto;
-import elementary.Rutix.Viajes.comandos.dto.EliminarPagoDeReservaComandoDto;
-import elementary.Rutix.Viajes.comandos.dto.EliminarReservaDeViajeComandoDto;
-import elementary.Rutix.Viajes.comandos.dto.RegistrarReservaDto;
+import elementary.Rutix.Viajes.comandos.dto.*;
 import elementary.Rutix.Viajes.comandos.pagos.EliminarPagoDeReservaComando;
 import elementary.Rutix.Viajes.comandos.pagos.RegistrarPagoDeReservaComando;
 import elementary.Rutix.Viajes.comandos.reservas.*;
@@ -87,12 +84,12 @@ public class ReservaController {
     }
 
     @PutMapping("confirmar")
-    public void confirmar( @RequestBody @Valid ActualizarReservaDeViajeDto dto){
+    public void confirmar( @RequestBody @Valid ActualizarEstadoReservaDto dto){
         confirmarReserva.execute(dto);
     }
 
     @PutMapping("rechazar")
-    public void rechazar( @RequestBody @Valid ActualizarReservaDeViajeDto dto){
+    public void rechazar( @RequestBody @Valid ActualizarEstadoReservaDto dto){
         rechazarReserva.execute(dto);
     }
 
