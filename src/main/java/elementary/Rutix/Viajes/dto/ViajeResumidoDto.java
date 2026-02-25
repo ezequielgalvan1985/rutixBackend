@@ -13,6 +13,8 @@ import lombok.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -59,5 +61,7 @@ public class ViajeResumidoDto {
     private BigDecimal valor;
 
     private EstadoViajeEnum estado;
+
+    private List<String> accionesDisponibles = new ArrayList<>();
 
 }

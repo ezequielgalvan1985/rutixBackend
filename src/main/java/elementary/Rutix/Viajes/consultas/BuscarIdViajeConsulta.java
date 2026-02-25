@@ -66,6 +66,7 @@ public class BuscarIdViajeConsulta implements Consulta<Long, ViajeDetalleDto> {
                 .accionesDisponibles(this.getListaAcciones(r,p))
                 .asientosDisponibles(r.getAsientosDisponibles())
                 .asientosReservados(r.getAsientosReservados())
+                .accionesDisponibles(this.getListaAcciones(r,p))
                 .build();
 
         return dto;
