@@ -6,8 +6,11 @@ import elementary.Rutix.PerfilRutix.repositorios.PerfilRutixRepository;
 import elementary.Rutix.PerfilRutix.dto.PerfilRutixDto;
 import elementary.Rutix.PerfilRutix.utlis.reglas.policy.PerfilExistenteReglaNegocio;
 import elementary.Rutix.PerfilRutix.utlis.reglas.policy.VehiculoExistenteReglaNegocio;
+import elementary.Rutix.common.excepciones.ReglaNegocioException;
 import elementary.Rutix.common.interfaces.Comando;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -37,9 +40,9 @@ public class ActualizarPerfilRutixComando implements Comando<PerfilRutixDto,Perf
     }
     @Override
     public PerfilRutixDto execute(PerfilRutixDto input) {
-
-        perfilExistenteRegla.aplicar(input.getId());
-
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        input.setUsuarioId(Long.valueOf(auth.getName()));
+        PerfilRutix p = repo.findByUsuarioId(input.getUsuarioId()).orElseThrow(()-> new ReglaNegocioException("NO existe perfil para el Usuario"));
 
         //Mappeo
         PerfilRutix r =this.repo.save(modelMapper.map(input, PerfilRutix.class));

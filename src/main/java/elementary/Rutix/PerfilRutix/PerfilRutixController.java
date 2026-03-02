@@ -5,6 +5,7 @@ import elementary.Rutix.PerfilRutix.comandos.EliminarPerfilRutixComando;
 import elementary.Rutix.PerfilRutix.comandos.tarjetas.EliminarTarjetaDePerfilComando;
 import elementary.Rutix.PerfilRutix.comandos.RegistrarPerfilRutixComando;
 import elementary.Rutix.PerfilRutix.consultas.BuscarIdPerfilRutixConsulta;
+import elementary.Rutix.PerfilRutix.consultas.BuscarMiPerfilRutixConsulta;
 import elementary.Rutix.PerfilRutix.consultas.ListadoPerfilRutixConsulta;
 import elementary.Rutix.PerfilRutix.dto.PerfilRutixDto;
 import elementary.Rutix.common.dto.ConsultaListadoRequestDto;
@@ -44,6 +45,8 @@ public class PerfilRutixController {
     @Autowired
     private EliminarTarjetaDePerfilComando eliminarTarjeta;
 
+    @Autowired
+    private BuscarMiPerfilRutixConsulta buscarMiPerfilRutixConsulta;
 
     private static final Logger logger = LoggerFactory.getLogger(PerfilRutixController.class);
 
@@ -67,15 +70,15 @@ public class PerfilRutixController {
     }
     @GetMapping(value="/me")
     public ResponseEntity<PerfilRutixDto> getMiPerfil(){
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        PerfilRutixDto registro =  buscar.execute(Long.valueOf(auth.getName()));
+        PerfilRutixDto registro =  buscarMiPerfilRutixConsulta.execute(null);
         return ResponseEntity.ok(registro);
-
     }
     @PutMapping(value="/me")
     public ResponseEntity<PerfilRutixDto> updMiPerfil(){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
         PerfilRutixDto registro =  buscar.execute(Long.valueOf(auth.getName()));
+
         return ResponseEntity.ok(registro);
 
     }
@@ -89,6 +92,7 @@ public class PerfilRutixController {
     @PutMapping()
     @ResponseStatus(HttpStatus.OK)
     public void edit(@RequestBody PerfilRutixDto dto){
+
         actualizar.execute(dto);
     }
 

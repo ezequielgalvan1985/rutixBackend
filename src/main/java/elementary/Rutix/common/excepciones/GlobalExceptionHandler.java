@@ -96,7 +96,7 @@ public class GlobalExceptionHandler {
                 .timestamp(new Date())
                 .data(null)
                 .build();
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(r);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(r);
     }
 
     @ExceptionHandler(Exception.class)
