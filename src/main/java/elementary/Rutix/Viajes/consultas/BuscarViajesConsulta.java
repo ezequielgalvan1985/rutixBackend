@@ -72,6 +72,7 @@ public class BuscarViajesConsulta implements Consulta<BuscarViajesRequestConsult
 
         ViajeResumidoDto dto = new ViajeResumidoDto()
                 .builder()
+                .id(r.getId())
                 .ciudadPartida(r.getCiudadPartida())
                 .ciudadDestino(r.getCiudadDestino())
                 .fechaSalida(r.getFechaSalida())

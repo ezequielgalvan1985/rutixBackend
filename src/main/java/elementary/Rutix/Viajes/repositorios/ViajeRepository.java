@@ -16,8 +16,17 @@ public interface ViajeRepository extends JpaRepository<Viaje,Long> {
     @Query(value = "SELECT m FROM Viaje m WHERE m.id > :offset ORDER BY m.id DESC")
     List<Viaje> findAll(@Param("offset") Long offset, Pageable pageable);
 
-    @Query(value = "SELECT m FROM Viaje m WHERE m.fechaSalida = :fechaSalida and m.ciudadPartida= :ciudadPartida and m.ciudadDestino = :ciudadDestino")
-    Page<Viaje> buscarViajes(@Param("fechaSalida") LocalDate fechaSalida, @Param("ciudadPartida") String ciudadPartida, @Param("ciudadDestino") String ciudadDestino,  Pageable pageable);
+    @Query("""
+       SELECT m FROM Viaje m
+       WHERE (:fechaSalida IS NULL OR m.fechaSalida = :fechaSalida)
+       AND (:ciudadPartida IS NULL OR m.ciudadPartida = :ciudadPartida)
+       AND (:ciudadDestino IS NULL OR m.ciudadDestino = :ciudadDestino)
+       """)
+    Page<Viaje> buscarViajes(
+            @Param("fechaSalida") LocalDate fechaSalida,
+            @Param("ciudadPartida") String ciudadPartida,
+            @Param("ciudadDestino") String ciudadDestino,
+            Pageable pageable);
 
     Page<Viaje> findByConductorIdOrderByIdDesc(Long conductorId, Pageable pageable);
 }
