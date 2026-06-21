@@ -104,6 +104,8 @@ public class Viaje {
     public void rechazarReserva(Long id){
         Reserva r = this.buscarReservaPorId(id);
         r.rechazar();
+        this.setAsientosReservados(this.getAsientosReservados()- r.getAsientos());
+        this.setAsientosDisponibles(this.getAsientosDisponibles()+r.getAsientos());
     }
     private Reserva buscarReservaPorId(Long id) {
         return this.listaReservas.stream()

@@ -18,9 +18,9 @@ public interface ViajeRepository extends JpaRepository<Viaje,Long> {
 
     @Query("""
        SELECT m FROM Viaje m
-       WHERE (:fechaSalida IS NULL OR m.fechaSalida = :fechaSalida)
-       AND (:ciudadPartida IS NULL OR m.ciudadPartida = :ciudadPartida)
-       AND (:ciudadDestino IS NULL OR m.ciudadDestino = :ciudadDestino)
+       WHERE ((:fechaSalida IS NULL AND m.fechaSalida = CURRENT_DATE) OR m.fechaSalida = :fechaSalida)
+       AND ((:ciudadPartida IS NULL OR TRIM(:ciudadPartida)='') OR m.ciudadPartida = :ciudadPartida)
+       AND ((:ciudadDestino IS NULL OR TRIM(:ciudadDestino)='') OR  m.ciudadDestino = :ciudadDestino)
        """)
     Page<Viaje> buscarViajes(
             @Param("fechaSalida") LocalDate fechaSalida,

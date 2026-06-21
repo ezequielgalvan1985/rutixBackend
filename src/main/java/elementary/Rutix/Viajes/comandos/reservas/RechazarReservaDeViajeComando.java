@@ -29,6 +29,7 @@ public class RechazarReservaDeViajeComando implements Comando<ActualizarEstadoRe
         Viaje v = this.repoViaje.findById(value.getViajeId()).orElseThrow(()-> new ReglaNegocioException("Viaje Inexistente"));
         if (v.getConductor().getId().equals(p.getId()) ==false) throw new ReglaNegocioException("Solo puede Rechazar la Reserva el Conductor del Viaje");
         v.rechazarReserva(value.getId());
+
         this.repoViaje.save(v);
 
         return null;
