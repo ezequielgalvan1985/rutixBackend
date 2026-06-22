@@ -79,6 +79,7 @@ public class BuscarIdViajeConsulta implements Consulta<Long, ViajeDetalleDto> {
             lista.add(AccionEnum.RESERVA_CONFIRMAR.name());
             lista.add(AccionEnum.RESERVA_RECHAZAR.name());
         }else{
+
             lista.add(AccionEnum.RESERVA_REGISTRAR.name());
             lista.add(AccionEnum.RESERVA_CANCELAR.name());
             lista.add(AccionEnum.RESERVA_PAGAR.name());

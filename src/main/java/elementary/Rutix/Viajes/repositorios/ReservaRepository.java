@@ -10,6 +10,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ReservaRepository extends JpaRepository<Reserva,Long> {
@@ -17,4 +18,6 @@ public interface ReservaRepository extends JpaRepository<Reserva,Long> {
     Page<Reserva> findAll(Pageable pageable);
 
     Page<Reserva> findByPasajeroIdOrderByIdDesc(Long pasajeroId, Pageable pageable);
+
+    Optional<Reserva> findByPasajeroIdAndViajeId(Long pasajeroId, Long viajeId);
 }

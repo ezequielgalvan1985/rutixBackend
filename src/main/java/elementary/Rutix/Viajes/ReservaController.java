@@ -6,6 +6,7 @@ import elementary.Rutix.Viajes.comandos.pagos.RegistrarPagoDeReservaComando;
 import elementary.Rutix.Viajes.comandos.reservas.*;
 import elementary.Rutix.Viajes.consultas.reservas.BuscarIdReservaConsulta;
 import elementary.Rutix.Viajes.consultas.MisViajesDePasajeroConsulta;
+import elementary.Rutix.Viajes.consultas.reservas.BuscarReservaPorViajeIdConsulta;
 import elementary.Rutix.Viajes.consultas.reservas.ListadoReservasConsulta;
 import elementary.Rutix.Viajes.dto.ListadoByPasajeroIdRequestDto;
 import elementary.Rutix.Viajes.dto.PagoDto;
@@ -26,16 +27,19 @@ import java.util.concurrent.TimeoutException;
 @RequestMapping("/v1/viajes/reservas")
 public class ReservaController {
 
+        //COMANDOS
         private final RegistrarReservaEnViajeComando registrar;
         private final EliminarReservaDeViajeComando eliminar;
-        private final ListadoReservasConsulta listar;
-        private final BuscarIdReservaConsulta buscar;
         private final ActualizarReservaDeViajeComando actualizar;
-
         private final RegistrarPagoDeReservaComando registrarPago;
         private final EliminarPagoDeReservaComando eliminarPago;
         private final ConfirmarReservaDeViajeComando confirmarReserva;
         private final RechazarReservaDeViajeComando rechazarReserva;
+
+        private final ListadoReservasConsulta listar;
+        private final BuscarIdReservaConsulta buscar;
+
+        private final BuscarReservaPorViajeIdConsulta buscarReservaPorViajeIdConsulta;
 
         private static final Logger logger = LoggerFactory.getLogger(elementary.Rutix.Viajes.ViajeController.class);
 
@@ -48,7 +52,8 @@ public class ReservaController {
                              RegistrarPagoDeReservaComando registrarPago,
                              EliminarPagoDeReservaComando eliminarPago,
                              ConfirmarReservaDeViajeComando confirmarReserva,
-                             RechazarReservaDeViajeComando rechazarReserva
+                             RechazarReservaDeViajeComando rechazarReserva,
+                             BuscarReservaPorViajeIdConsulta buscarReservaPorViajeIdConsulta
                              ) {
         this.registrar = registrar;
         this.eliminar = eliminar;
@@ -59,6 +64,7 @@ public class ReservaController {
         this.eliminarPago = eliminarPago;
         this.confirmarReserva = confirmarReserva;
         this.rechazarReserva = rechazarReserva;
+        this.buscarReservaPorViajeIdConsulta = buscarReservaPorViajeIdConsulta;
     }
 
     @GetMapping()
@@ -76,6 +82,13 @@ public class ReservaController {
         return ResponseEntity.ok(registro);
 
     }
+
+    @GetMapping(value="/consulta/viaje/{id}")
+    public ResponseEntity<ReservaDto> buscarPorViajeId(@PathVariable("id") Long id){
+        ReservaDto registro =  buscarReservaPorViajeIdConsulta.execute(id);
+        return ResponseEntity.ok(registro);
+    }
+
 
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)

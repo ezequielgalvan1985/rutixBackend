@@ -40,16 +40,29 @@ public class RegistrarReservaEnViajeComando implements Comando<RegistrarReservaD
 
         //agregar restriccion, pasajero no puede ser conductor
         if(v.getConductor().getId().equals(p.getId())) throw  new ReglaNegocioException("Conductor no puede reservar un asiento");
-        Reserva r = Reserva.builder()
-                .pasajero(p)
-                .viaje(v)
-                .asientos(value.getAsientos())
-                .estado(EstadoReserva.PENDIENTE)
-                .build();
+        //buscar si tiene reserva este usuario
+
+        //si existe reserva se debera modificar la Reserva agregando asientos cantidad de asientos
+        Reserva reserva = v.getListaReservas().stream()
+                .filter(r -> r.getPasajero().getId().equals(p.getId()))
+                .findFirst()
+                .orElse(null);
+        if (reserva!=null){
+            reserva.setAsientos(reserva.getAsientos() + value.getAsientos());
+        }else{
+            reserva = Reserva.builder()
+                    .pasajero(p)
+                    .viaje(v)
+                    .asientos(value.getAsientos())
+                    .estado(EstadoReserva.PENDIENTE)
+                    .build();
+        }
+
         v.setAsientosReservados(v.getAsientosReservados()+value.getAsientos());
         v.setAsientosDisponibles(v.getAsientos()-v.getAsientosReservados());
-        v.registrarReserva(r);
+        v.registrarReserva(reserva);
+
         repoViaje.save(v);
-        return this.modelMapper.map(r, ReservaDto.class);
+        return this.modelMapper.map(reserva, ReservaDto.class);
     }
 }

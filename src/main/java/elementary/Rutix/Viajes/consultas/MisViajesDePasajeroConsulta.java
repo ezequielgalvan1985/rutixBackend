@@ -30,12 +30,12 @@ public class MisViajesDePasajeroConsulta implements Consulta<ConsultaListadoRequ
     private PerfilRutixRepository repoPerfil;
 
 
-    public MisViajesDePasajeroConsulta(ReservaRepository r,
-                                       ModelMapper modelMapper,
-                                       PerfilRutixRepository repoPerfil){
-        this.repo = r;
-        this.modelMapper = modelMapper;
-        this.repoPerfil = repoPerfil;
+        public MisViajesDePasajeroConsulta(ReservaRepository r,
+                                           ModelMapper modelMapper,
+                                           PerfilRutixRepository repoPerfil){
+            this.repo = r;
+            this.modelMapper = modelMapper;
+            this.repoPerfil = repoPerfil;
     }
 
     @Override
@@ -68,7 +68,7 @@ public class MisViajesDePasajeroConsulta implements Consulta<ConsultaListadoRequ
 
         ViajeResumidoDto dto = new ViajeResumidoDto()
                 .builder()
-                .id(r.getId())
+                .id(r.getViaje().getId())
                 .ciudadPartida(r.getViaje().getCiudadPartida())
                 .ciudadDestino(r.getViaje().getCiudadDestino())
                 .fechaSalida(r.getViaje().getFechaSalida())
