@@ -6,6 +6,8 @@ import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,12 +20,13 @@ public class ReservaDto {
 
     private Long viajeId;
 
+
     private List<PagoDto> listaPagos = new ArrayList<PagoDto>();
 
 
 
     @Max(value=30, message="cantidad de lugares maximo permitido 30")
-    private Integer cantidadLugares;
+    private Integer asientos;
 
 
     @NotNull
@@ -35,4 +38,7 @@ public class ReservaDto {
     private LocalDateTime fechaPuntaje;
 
     private Integer puntaje;
+
+    private BigDecimal valorTotalReserva;
+
 }

@@ -3,6 +3,7 @@ package elementary.Rutix.Viajes.comandos.reservas;
 import elementary.Rutix.PerfilRutix.dominio.PerfilRutix;
 import elementary.Rutix.PerfilRutix.repositorios.PerfilRutixRepository;
 import elementary.Rutix.Viajes.comandos.dto.ActualizarEstadoReservaDto;
+import elementary.Rutix.Viajes.dominio.Reserva;
 import elementary.Rutix.Viajes.dominio.Viaje;
 import elementary.Rutix.Viajes.repositorios.ViajeRepository;
 import elementary.Rutix.common.excepciones.ReglaNegocioException;
@@ -27,7 +28,14 @@ public class RechazarReservaDeViajeComando implements Comando<ActualizarEstadoRe
         Long uid = Long.parseLong(auth.getName());
         PerfilRutix p = repoPerfil.findByUsuarioId(uid).orElseThrow(() -> new ReglaNegocioException("No se encontró el perfil"));
         Viaje v = this.repoViaje.findById(value.getViajeId()).orElseThrow(()-> new ReglaNegocioException("Viaje Inexistente"));
-        if (v.getConductor().getId().equals(p.getId()) ==false) throw new ReglaNegocioException("Solo puede Rechazar la Reserva el Conductor del Viaje");
+
+        //agregar validacion para que solo el conductor o el dueño de la reserva pueda rechazar
+        Reserva r = v.getListaReservas().stream()
+                .filter(x -> x.getId().equals(value.getId()))
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("No existe la reserva"));
+        if (v.getConductor().getId()!= p.getId() && r.getPasajero().getId()!= p.getId() ) throw new ReglaNegocioException("Solo puede Rechazar la Reserva el Conductor o el Pasajero del Viaje");
+
         v.rechazarReserva(value.getId());
 
         this.repoViaje.save(v);

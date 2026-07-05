@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
@@ -54,6 +55,10 @@ public class Reserva {
     private LocalDateTime fechaPuntaje;
 
     private Integer puntaje;
+
+    public BigDecimal getValorTotalReserva(){
+        return this.viaje.getValor().multiply(BigDecimal.valueOf(this.getAsientos().longValue()));
+    }
 
     @PrePersist
     public void prePersist() {
