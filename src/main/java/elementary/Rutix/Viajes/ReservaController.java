@@ -35,8 +35,9 @@ public class ReservaController {
         private final EliminarPagoDeReservaComando eliminarPago;
         private final ConfirmarReservaDeViajeComando confirmarReserva;
         private final RechazarReservaDeViajeComando rechazarReserva;
+        private final CancelarReservaDeViajeComando cancelarReserva;
 
-        private final ListadoReservasConsulta listar;
+         private final ListadoReservasConsulta listar;
         private final BuscarIdReservaConsulta buscar;
 
         private final BuscarReservaPorViajeIdConsulta buscarReservaPorViajeIdConsulta;
@@ -53,6 +54,7 @@ public class ReservaController {
                              EliminarPagoDeReservaComando eliminarPago,
                              ConfirmarReservaDeViajeComando confirmarReserva,
                              RechazarReservaDeViajeComando rechazarReserva,
+                             CancelarReservaDeViajeComando cancelarReserva,
                              BuscarReservaPorViajeIdConsulta buscarReservaPorViajeIdConsulta
                              ) {
         this.registrar = registrar;
@@ -65,6 +67,7 @@ public class ReservaController {
         this.confirmarReserva = confirmarReserva;
         this.rechazarReserva = rechazarReserva;
         this.buscarReservaPorViajeIdConsulta = buscarReservaPorViajeIdConsulta;
+        this.cancelarReserva = cancelarReserva;
     }
 
     @GetMapping()
@@ -106,6 +109,10 @@ public class ReservaController {
         rechazarReserva.execute(dto);
     }
 
+    @PutMapping("cancelar")
+    public void cancelar( @RequestBody @Valid ActualizarEstadoReservaDto dto){
+        cancelarReserva.execute(dto);
+    }
 
     @PutMapping()
     public void edit( @RequestBody @Valid ActualizarReservaDeViajeDto dto){

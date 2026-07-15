@@ -13,11 +13,11 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 @Service
-public class RechazarReservaDeViajeComando implements Comando<ActualizarEstadoReservaDto, Void> {
+public class CancelarReservaDeViajeComando implements Comando<ActualizarEstadoReservaDto, Void> {
     private ViajeRepository repoViaje;
     private PerfilRutixRepository repoPerfil;
 
-    public RechazarReservaDeViajeComando(ViajeRepository repoViaje, PerfilRutixRepository repoPerfil) {
+    public CancelarReservaDeViajeComando(ViajeRepository repoViaje, PerfilRutixRepository repoPerfil) {
         this.repoViaje = repoViaje;
         this.repoPerfil = repoPerfil;
     }
@@ -36,9 +36,9 @@ public class RechazarReservaDeViajeComando implements Comando<ActualizarEstadoRe
                 .orElseThrow(() -> new RuntimeException("No existe la Reserva"));
 
         if (v.getConductor().getId()!= p.getId() && r.getPasajero().getId()!= p.getId() )
-            throw new ReglaNegocioException("Solo puede Rechazar la Reserva el Conductor o el Pasajero del Viaje");
+            throw new ReglaNegocioException("Solo puede Cancelar la Reserva el Conductor o el Pasajero del Viaje");
 
-        v.rechazarReserva(value.getId());
+        v.cancelarReserva(value.getId());
 
         this.repoViaje.save(v);
 

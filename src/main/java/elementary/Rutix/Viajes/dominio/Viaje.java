@@ -107,6 +107,12 @@ public class Viaje {
         this.setAsientosReservados(this.getAsientosReservados()- r.getAsientos());
         this.setAsientosDisponibles(this.getAsientosDisponibles()+r.getAsientos());
     }
+    public void cancelarReserva(Long id){
+        Reserva r = this.buscarReservaPorId(id);
+        r.cancelar();
+        this.setAsientosReservados(this.getAsientosReservados()- r.getAsientos());
+        this.setAsientosDisponibles(this.getAsientosDisponibles()+r.getAsientos());
+    }
     private Reserva buscarReservaPorId(Long id) {
         return this.listaReservas.stream()
                 .filter(reserva -> reserva.getId().equals(id))

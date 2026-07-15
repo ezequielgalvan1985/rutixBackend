@@ -73,11 +73,15 @@ public class Reserva {
     }
 
     public void confirmar(){
-        if(this.getEstado()!=EstadoReserva.PENDIENTE) throw new ReglaNegocioException("Solo se puede confirmar una reserva pendiente");
+        if(this.getEstado()!=EstadoReserva.PENDIENTE) throw new ReglaNegocioException("Solo se puede Confirmar una reserva pendiente");
         this.setEstado(EstadoReserva.CONFIRMADA);
     }
     public void rechazar(){
-        if(this.getEstado()!=EstadoReserva.PENDIENTE) throw new ReglaNegocioException("Solo se puede confirmar una reserva pendiente");
+        if(this.getEstado()!=EstadoReserva.PENDIENTE) throw new ReglaNegocioException("Solo se puede Rechazar una reserva pendiente");
         this.setEstado(EstadoReserva.RECHAZADA);
+    }
+    public void cancelar(){
+        if(this.getEstado()!=EstadoReserva.PENDIENTE) throw new ReglaNegocioException("Solo se puede Cancelar una reserva pendiente");
+        this.setEstado(EstadoReserva.CANCELADA);
     }
 }

@@ -17,12 +17,7 @@ public class PagoDto {
     @NotNull(message = "ReservaID es obligatorio")
     private Long reservaId;
 
-    private LocalDateTime fechaAlta;
-
     @NotNull(message = "Importe es Obligatorio")
     private BigDecimal importe;
-
-    @NotNull(message = "Estado es obligatorio")
-    private EstadoPagoEnum estado;
 
 }

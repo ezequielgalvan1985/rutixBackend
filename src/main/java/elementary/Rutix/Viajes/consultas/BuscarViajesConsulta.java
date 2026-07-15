@@ -57,7 +57,7 @@ public class BuscarViajesConsulta implements Consulta<BuscarViajesRequestConsult
         Long uid = Long.parseLong(auth.getName());
         this.perfilLogueado = repoPerfil.findByUsuarioId(uid).orElseThrow(() -> new ReglaNegocioException("No se encontró el perfil"));
 
-        Page<Viaje> result = this.repo.buscarViajes(input.getFechaSalida(), input.getCiudadPartida(), input.getCiudadDestino(),  pageable);
+        Page<Viaje> result = this.repo.buscarViajes(input.getFechaSalida(), input.getCiudadPartida(), input.getCiudadDestino(), input.getEstado(), pageable);
 
         return PageResponseDto.<ViajeResumidoDto>builder()
                 .data(result.map(this::toDto).getContent())
