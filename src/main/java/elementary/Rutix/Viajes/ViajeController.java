@@ -41,8 +41,7 @@ public class ViajeController {
                            EliminarViajeComando eliminarViajeUseCase,
                            BuscarIdViajeConsulta buscarViajeUseCase,
                            ListadoViajeConsulta listadoViajeUseCase,
-                           RegistrarReservaEnViajeComando registrarReservaEnViajeUseCase,
-                           EliminarReservaDeViajeComando eliminarReservaDeViajeUseCase,
+
                            BuscarViajesConsulta buscarViajesConsulta,
                            MisViajesConductorConsulta listadoMisViajesConductorConsulta,
                            MisViajesDePasajeroConsulta misViajesDePasajeroConsulta

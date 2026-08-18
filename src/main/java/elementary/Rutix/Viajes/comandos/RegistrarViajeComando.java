@@ -64,7 +64,7 @@ public class RegistrarViajeComando implements Comando<RegistrarViajeRequestComan
         v.setPagaSenia(input.getPagaSenia());
         v.setPorcentajeSenia(input.getPorcentajeSenia());
         v.setValor(input.getValor());
-        v.setEstado(EstadoViajeEnum.valueOf("CREADO"));
+        v.setEstado(EstadoViajeEnum.valueOf("EN_CURSO"));
         v.setAsientosDisponibles(v.getAsientos());
         v.setAsientosReservados(0);
         Viaje viaje = this.repo.save(v);

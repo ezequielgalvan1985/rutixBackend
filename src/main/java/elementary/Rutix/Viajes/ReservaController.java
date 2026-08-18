@@ -24,7 +24,7 @@ import java.io.IOException;
 import java.util.concurrent.TimeoutException;
 
 @RestController
-@RequestMapping("/v1/viajes/reservas")
+@RequestMapping("/v1/reservas")
 public class ReservaController {
 
         //COMANDOS
@@ -126,13 +126,13 @@ public class ReservaController {
     }
 
 
-    @PostMapping("/pagos")
+    @PostMapping("/pagar")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<ReservaDto> registrarPago(@RequestBody @Valid PagoDto m, @RequestHeader("X-User-Name") String username) throws IOException, TimeoutException, IOException, TimeoutException {
+    public ResponseEntity<ReservaDto> registrarPago(@RequestBody @Valid PagoDto m) throws IOException, TimeoutException, IOException, TimeoutException {
         return ResponseEntity.ok(registrarPago.execute(m));
     }
 
-    @DeleteMapping("/pagos")
+    @DeleteMapping("/eliminar-pago")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@RequestBody @Valid EliminarPagoDeReservaComandoDto dto){
         eliminarPago.execute(dto);

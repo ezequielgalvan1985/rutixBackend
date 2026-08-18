@@ -23,8 +23,8 @@ public interface ViajeRepository extends JpaRepository<Viaje,Long> {
         (:fechaSalida IS NULL AND m.fechaSalida >= CURRENT_DATE)
         OR m.fechaSalida = :fechaSalida
     )
-    AND (:ciudadPartida IS NULL OR m.ciudadPartida = :ciudadPartida)
-    AND (:ciudadDestino IS NULL OR m.ciudadDestino = :ciudadDestino)
+    AND ((:ciudadPartida IS NULL or :ciudadPartida = '')OR m.ciudadPartida = :ciudadPartida )
+    AND ((:ciudadDestino IS NULL or :ciudadDestino = '') OR m.ciudadDestino = :ciudadDestino)
     AND (:estado IS NULL OR m.estado = :estado)
 """)
     Page<Viaje> buscarViajes(

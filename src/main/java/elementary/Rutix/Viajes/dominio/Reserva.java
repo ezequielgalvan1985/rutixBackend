@@ -66,7 +66,9 @@ public class Reserva {
     }
 
     public void registrarPago(Pago p){
+        p.setReserva(this);
         this.listaPagos.add(p);
+
     }
     public void eliminarPago(Long id){
         this.listaPagos.removeIf(pago->pago.getId()==id);
