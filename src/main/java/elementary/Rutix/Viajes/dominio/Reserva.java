@@ -56,6 +56,10 @@ public class Reserva {
 
     private Integer puntaje;
 
+    private String proveedor;
+    private String externalId;
+    private String paymentId;
+
     public BigDecimal getValorTotalReserva(){
         return this.viaje.getValor().multiply(BigDecimal.valueOf(this.getAsientos().longValue()));
     }

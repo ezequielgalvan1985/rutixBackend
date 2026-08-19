@@ -34,12 +34,17 @@ public class RegistrarReservaEnViajeComando implements Comando<RegistrarReservaD
     public ReservaDto execute(RegistrarReservaDto value) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Long uid = Long.parseLong(auth.getName());
+
         PerfilRutix p = repoPerfil.findByUsuarioId(uid).orElseThrow(() -> new ReglaNegocioException("No se encontró el perfil"));
+
         Viaje v = this.repoViaje.findById(value.getViajeId()).orElseThrow(()->new ReglaNegocioException("Viaje Inexistente"));
-        if (v.getAsientosDisponibles() < value.getAsientos()) throw new ReglaNegocioException("No hay Asientos disponibles");
+
+        if (v.getAsientosDisponibles() < value.getAsientos())
+            throw new ReglaNegocioException("Cantidad Ingresada supera los Asientos Disponibles");
 
         //agregar restriccion, pasajero no puede ser conductor
-        if(v.getConductor().getId().equals(p.getId())) throw  new ReglaNegocioException("Conductor no puede reservar un asiento");
+        if(v.getConductor().getId().equals(p.getId()))
+            throw  new ReglaNegocioException("Conductor no puede reservar un asiento");
         //buscar si tiene reserva este usuario
 
         //si existe reserva se debera modificar la Reserva agregando asientos cantidad de asientos
@@ -48,6 +53,8 @@ public class RegistrarReservaEnViajeComando implements Comando<RegistrarReservaD
                 .findFirst()
                 .orElse(null);
         if (reserva!=null){
+
+
             reserva.setAsientos(reserva.getAsientos() + value.getAsientos());
         }else{
             reserva = Reserva.builder()

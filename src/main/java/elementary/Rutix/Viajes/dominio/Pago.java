@@ -45,4 +45,6 @@ public class Pago {
         this.fechaAlta = LocalDateTime.now(ZoneId.of("America/Argentina/Buenos_Aires"));
     }
 
+    private String externalId;
+
 }

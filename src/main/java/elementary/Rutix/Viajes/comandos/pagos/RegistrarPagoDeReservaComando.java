@@ -3,6 +3,8 @@ package elementary.Rutix.Viajes.comandos.pagos;
 import elementary.Rutix.PerfilRutix.dominio.PerfilRutix;
 import elementary.Rutix.PerfilRutix.repositorios.PerfilRutixRepository;
 import elementary.Rutix.PerfilRutix.utlis.reglas.policy.PerfilExistenteReglaNegocio;
+import elementary.Rutix.Viajes.IntegracionPagoExterno.GeneradorCobroFactory;
+import elementary.Rutix.Viajes.IntegracionPagoExterno.GeneradorCobroStrategy;
 import elementary.Rutix.Viajes.dominio.Pago;
 import elementary.Rutix.Viajes.dominio.Reserva;
 import elementary.Rutix.Viajes.dto.PagoDto;
@@ -23,14 +25,17 @@ public class RegistrarPagoDeReservaComando implements Comando<PagoDto, ReservaDt
     private ModelMapper modelMapper;
     private ReservaRepository repo;
     private PerfilRutixRepository repoPerfil;
+    private final GeneradorCobroFactory factory;
 
     public RegistrarPagoDeReservaComando(ModelMapper modelMapper,
                                          ReservaRepository repo,
-                                         PerfilRutixRepository repoPerfil
+                                         PerfilRutixRepository repoPerfil,
+                                         GeneradorCobroFactory factory
                                           ) {
         this.modelMapper = modelMapper;
         this.repo = repo;
         this.repoPerfil = repoPerfil;
+        this.factory = factory;
     }
 
     @Override
@@ -40,7 +45,9 @@ public class RegistrarPagoDeReservaComando implements Comando<PagoDto, ReservaDt
         //validaciones
         //estado pendiente
 
-        if (reserva.getEstado()!= EstadoReserva.PENDIENTE) throw new ReglaNegocioException("Reserva no se encuentra PENDIENTE");
+        if (reserva.getEstado()!= EstadoReserva.PENDIENTE)
+            throw new ReglaNegocioException("Reserva no se encuentra PENDIENTE");
+
 
         //usuario que paga reserva debe ser el mismo que genero la reserva
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -50,15 +57,20 @@ public class RegistrarPagoDeReservaComando implements Comando<PagoDto, ReservaDt
         PerfilRutix usuarioReserva = repoPerfil.findByUsuarioId(reserva.getPasajero().getId())
                                         .orElseThrow(() -> new ReglaNegocioException("No se encontró el perfil"));
 
-        if (usuarioLogueado.getId()!= usuarioReserva.getId()) throw new ReglaNegocioException("Acceso Denegado para Pagar Reserva");
+        if (usuarioLogueado.getId()!= usuarioReserva.getId())
+            throw new ReglaNegocioException("Acceso Denegado para Pagar Reserva");
 
         Pago p = new Pago();
         p.setImporte(reserva.getValorTotalReserva());
-        p.setEstado(EstadoPagoEnum.CONFIRMADO);
+        p.setEstado(EstadoPagoEnum.PENDIENTE);
         p.setForma(value.getForma());
         reserva.registrarPago(p);
         reserva.setEstado(EstadoReserva.PAGADA);
         repo.save(reserva);
+
+        GeneradorCobroStrategy strategy = factory.obtener(p.getForma());
+        PagoDto cobro = strategy.generar(new PagoDto());
+
         return modelMapper.map(reserva, ReservaDto.class);
 
     }
