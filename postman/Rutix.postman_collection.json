@@ -1,0 +1,1262 @@
+{
+  "info": {
+    "_postman_id": "35ad612f-80f3-44a5-b752-6a4034ec1181",
+    "name": "Rutix API",
+    "description": "Coleccion de pruebas para el backend de Rutix (Spring Boot). Dominios: Perfil (perfil, vehiculos, tarjetas, cuentas bancarias) y Viajes (viajes, reservas, pagos).\n\nVariables: baseUrl (http://localhost:8096 en application-local.yml), token (JWT Bearer), perfilId, vehiculoId, tarjetaId, cuentaId, viajeId, reservaId, pagoId, username.\n\nFlujo sugerido de casos de prueba:\n1. Crear perfil (conductor) -> guardar perfilId.\n2. Registrar vehiculo para ese perfil -> guardar vehiculoId.\n3. Registrar viaje con ese vehiculo -> guardar viajeId.\n4. Crear un segundo perfil (pasajero).\n5. Buscar viajes y registrar una reserva -> guardar reservaId.\n6. Confirmar la reserva (como conductor).\n7. Registrar el pago de la reserva.\n8. Probar casos negativos: reservar mas asientos que los disponibles, confirmar una reserva ya confirmada, cancelar una reserva confirmada, etc. (ver reglas de negocio en el dominio).",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8096"
+    },
+    {
+      "key": "token",
+      "value": ""
+    },
+    {
+      "key": "username",
+      "value": "ezequiel"
+    },
+    {
+      "key": "perfilId",
+      "value": "1"
+    },
+    {
+      "key": "vehiculoId",
+      "value": "1"
+    },
+    {
+      "key": "tarjetaId",
+      "value": "1"
+    },
+    {
+      "key": "cuentaId",
+      "value": "1"
+    },
+    {
+      "key": "viajeId",
+      "value": "1"
+    },
+    {
+      "key": "reservaId",
+      "value": "1"
+    },
+    {
+      "key": "pagoId",
+      "value": "1"
+    }
+  ],
+  "item": [
+    {
+      "name": "Perfil",
+      "item": [
+        {
+          "name": "Listar perfiles",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/v1/perfil?limit=25&offset=0",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "perfil"
+              ],
+              "query": [
+                {
+                  "key": "limit",
+                  "value": "25"
+                },
+                {
+                  "key": "offset",
+                  "value": "0"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Ver perfil por ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/v1/perfil/{{perfilId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "perfil",
+                "{{perfilId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Ver mi perfil (token)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/v1/perfil/me",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "perfil",
+                "me"
+              ]
+            },
+            "description": "Usa el perfil asociado al JWT (Authorization: Bearer {{token}})."
+          },
+          "response": []
+        },
+        {
+          "name": "Actualizar mi perfil (token)",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/v1/perfil/me",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "perfil",
+                "me"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Crear perfil",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/perfil",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "perfil"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Ezequiel Galvan\",\n  \"usuarioId\": 1,\n  \"direccion\": \"Av. Siempre Viva 123\",\n  \"telefono\": \"11-5555-5555\",\n  \"email\": \"ezequiel@example.com\",\n  \"ciudad\": \"CABA\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Editar perfil",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/perfil",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "perfil"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Ezequiel Galvan\",\n  \"usuarioId\": 1,\n  \"direccion\": \"Av. Siempre Viva 123\",\n  \"telefono\": \"11-5555-5555\",\n  \"email\": \"ezequiel@example.com\",\n  \"ciudad\": \"CABA\",\n  \"id\": \"{{perfilId}}\",\n  \"valoracion\": 9\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Eliminar perfil",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/v1/perfil/{{perfilId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "perfil",
+                "{{perfilId}}"
+              ]
+            }
+          },
+          "response": []
+        }
+      ],
+      "description": "Alta, baja, modificacion y consulta de perfiles (PerfilRutixController)."
+    },
+    {
+      "name": "Vehiculos",
+      "item": [
+        {
+          "name": "Listar vehiculos",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/v1/perfil/vehiculos?limit=25&offset=0",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "perfil",
+                "vehiculos"
+              ],
+              "query": [
+                {
+                  "key": "limit",
+                  "value": "25"
+                },
+                {
+                  "key": "offset",
+                  "value": "0"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Ver vehiculo por ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/v1/perfil/vehiculos/{{vehiculoId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "perfil",
+                "vehiculos",
+                "{{vehiculoId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Registrar vehiculo",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/perfil/vehiculos",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "perfil",
+                "vehiculos"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"marca\": \"Volkswagen\",\n  \"modelo\": \"Gol Trend\",\n  \"patente\": \"AB123CD\",\n  \"anio\": \"2019\",\n  \"tieneAire\": true,\n  \"activo\": true,\n  \"asientos\": 4,\n  \"descripcion\": \"Auto familiar, 5 puertas\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Editar vehiculo",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/perfil/vehiculos",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "perfil",
+                "vehiculos"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": \"{{vehiculoId}}\",\n  \"marca\": \"Volkswagen\",\n  \"modelo\": \"Gol Trend\",\n  \"patente\": \"AB123CD\",\n  \"anio\": \"2019\",\n  \"tieneAire\": true,\n  \"activo\": true,\n  \"descripcion\": \"Auto familiar, 5 puertas - service al dia\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Eliminar vehiculo",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/v1/perfil/vehiculos/{{vehiculoId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "perfil",
+                "vehiculos",
+                "{{vehiculoId}}"
+              ]
+            }
+          },
+          "response": []
+        }
+      ],
+      "description": "Vehiculos de un perfil (VehiculoController)."
+    },
+    {
+      "name": "Tarjetas",
+      "item": [
+        {
+          "name": "Listar tarjetas",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/v1/perfil/tarjetas?limit=25&offset=0",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "perfil",
+                "tarjetas"
+              ],
+              "query": [
+                {
+                  "key": "limit",
+                  "value": "25"
+                },
+                {
+                  "key": "offset",
+                  "value": "0"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Ver tarjeta por ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/v1/perfil/tarjetas/{{tarjetaId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "perfil",
+                "tarjetas",
+                "{{tarjetaId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Registrar tarjeta",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "X-User-Name",
+                "value": "{{username}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/perfil/tarjetas",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "perfil",
+                "tarjetas"
+              ]
+            },
+            "description": "Requiere header X-User-Name ademas del body.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tipo\": \"CREDITO\",\n  \"marca\": \"VISA\",\n  \"ultimos4Digitos\": \"4242\",\n  \"titular\": \"Ezequiel Galvan\",\n  \"mesVencimiento\": 11,\n  \"anioVencimiento\": 2030,\n  \"token\": \"tok_visa_demo_0001\",\n  \"activa\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Editar tarjeta",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/perfil/tarjetas",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "perfil",
+                "tarjetas"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tipo\": \"CREDITO\",\n  \"marca\": \"VISA\",\n  \"ultimos4Digitos\": \"4242\",\n  \"titular\": \"Ezequiel Galvan\",\n  \"mesVencimiento\": 11,\n  \"anioVencimiento\": 2030,\n  \"token\": \"tok_visa_demo_0001\",\n  \"activa\": true,\n  \"id\": \"{{tarjetaId}}\",\n  \"perfilId\": \"{{perfilId}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Eliminar tarjeta",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/perfil/tarjetas",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "perfil",
+                "tarjetas"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": \"{{tarjetaId}}\",\n  \"perfilId\": \"{{perfilId}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        }
+      ],
+      "description": "Tarjetas de un perfil (TarjetaController). Alta/baja llevan header X-User-Name."
+    },
+    {
+      "name": "Cuentas bancarias",
+      "item": [
+        {
+          "name": "Listar cuentas bancarias",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/v1/perfil/cuentas?limit=25&offset=0",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "perfil",
+                "cuentas"
+              ],
+              "query": [
+                {
+                  "key": "limit",
+                  "value": "25"
+                },
+                {
+                  "key": "offset",
+                  "value": "0"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Ver cuenta por ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/v1/perfil/cuentas/{{cuentaId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "perfil",
+                "cuentas",
+                "{{cuentaId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Registrar cuenta bancaria",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "X-User-Name",
+                "value": "{{username}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/perfil/cuentas",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "perfil",
+                "cuentas"
+              ]
+            },
+            "description": "Requiere header X-User-Name ademas del body.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"perfilId\": \"{{perfilId}}\",\n  \"nombreTitular\": \"Ezequiel Galvan\",\n  \"cbu\": \"0000003100000000000001\",\n  \"alias\": \"rutix.conductor.mp\",\n  \"numero\": \"0000000000\",\n  \"nombreEntidad\": \"Banco Nacion\",\n  \"codigoEntidad\": 11,\n  \"activo\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Editar cuenta bancaria",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/perfil/cuentas",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "perfil",
+                "cuentas"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"perfilId\": \"{{perfilId}}\",\n  \"nombreTitular\": \"Ezequiel Galvan\",\n  \"cbu\": \"0000003100000000000001\",\n  \"alias\": \"rutix.conductor.mp\",\n  \"numero\": \"0000000000\",\n  \"nombreEntidad\": \"Banco Nacion\",\n  \"codigoEntidad\": 11,\n  \"activo\": true,\n  \"id\": \"{{cuentaId}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Eliminar cuenta bancaria",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/perfil/cuentas",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "perfil",
+                "cuentas"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": \"{{cuentaId}}\",\n  \"perfilId\": \"{{perfilId}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        }
+      ],
+      "description": "Cuentas bancarias de un perfil (CuentaBancariaController). Alta lleva header X-User-Name."
+    },
+    {
+      "name": "Viajes",
+      "item": [
+        {
+          "name": "Mis viajes como conductor",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/v1/viajes/listado/misviajes/conductor?limit=25&offset=0",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "viajes",
+                "listado",
+                "misviajes",
+                "conductor"
+              ],
+              "query": [
+                {
+                  "key": "limit",
+                  "value": "25"
+                },
+                {
+                  "key": "offset",
+                  "value": "0"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Mis viajes como pasajero",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/v1/viajes/listado/misviajes/pasajero?limit=25&offset=0",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "viajes",
+                "listado",
+                "misviajes",
+                "pasajero"
+              ],
+              "query": [
+                {
+                  "key": "limit",
+                  "value": "25"
+                },
+                {
+                  "key": "offset",
+                  "value": "0"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Listar viajes",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/v1/viajes?limit=25&offset=0",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "viajes"
+              ],
+              "query": [
+                {
+                  "key": "limit",
+                  "value": "25"
+                },
+                {
+                  "key": "offset",
+                  "value": "0"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Buscar viajes (origen/destino/fecha)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/viajes/buscar",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "viajes",
+                "buscar"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fechaSalida\": \"2026-12-01\",\n  \"ciudadPartida\": \"Buenos Aires\",\n  \"ciudadDestino\": \"Mar del Plata\",\n  \"estado\": \"CREADO\",\n  \"offset\": 0,\n  \"limit\": 25\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Ver viaje por ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/v1/viajes/{{viajeId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "viajes",
+                "{{viajeId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Registrar viaje",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/viajes",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "viajes"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fechaSalida\": \"2026-12-01\",\n  \"horaSalida\": \"08:30:00\",\n  \"horaLlegada\": \"11:00:00\",\n  \"ciudadPartida\": \"Buenos Aires\",\n  \"ciudadDestino\": \"Mar del Plata\",\n  \"vehiculoId\": \"{{vehiculoId}}\",\n  \"asientos\": 3,\n  \"pagaSenia\": true,\n  \"porcentajeSenia\": 20,\n  \"valor\": 15000.0\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Editar viaje",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/viajes",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "viajes"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": \"{{viajeId}}\",\n  \"fechaSalida\": \"2026-12-01\",\n  \"horaSalida\": \"08:30:00\",\n  \"horaLlegada\": \"11:00:00\",\n  \"ciudadPartida\": \"Buenos Aires\",\n  \"ciudadDestino\": \"Mar del Plata\",\n  \"conductor\": {\n    \"id\": \"{{perfilId}}\",\n    \"usuarioId\": 1,\n    \"direccion\": \"Av. Siempre Viva 123\",\n    \"email\": \"ezequiel@example.com\",\n    \"ciudad\": \"CABA\"\n  },\n  \"lugaresTotales\": 3,\n  \"pagaSenia\": true,\n  \"porcentajeSenia\": 20,\n  \"valor\": 15000.0,\n  \"estado\": \"CREADO\",\n  \"asientos\": 3,\n  \"asientosDisponibles\": 2,\n  \"asientosReservados\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Eliminar viaje",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/v1/viajes/{{viajeId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "viajes",
+                "{{viajeId}}"
+              ]
+            }
+          },
+          "response": []
+        }
+      ],
+      "description": "Publicacion y busqueda de viajes (ViajeController)."
+    },
+    {
+      "name": "Reservas y pagos",
+      "item": [
+        {
+          "name": "Listar reservas",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/v1/reservas?limit=25&offset=0",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "reservas"
+              ],
+              "query": [
+                {
+                  "key": "limit",
+                  "value": "25"
+                },
+                {
+                  "key": "offset",
+                  "value": "0"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Ver reserva por ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/v1/reservas/{{reservaId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "reservas",
+                "{{reservaId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Ver reserva por ID de viaje",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/v1/reservas/consulta/viaje/{{viajeId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "reservas",
+                "consulta",
+                "viaje",
+                "{{viajeId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Registrar reserva (pasajero)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/reservas",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "reservas"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"viajeId\": \"{{viajeId}}\",\n  \"asientos\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Confirmar reserva (conductor)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/reservas/confirmar",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "reservas",
+                "confirmar"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": \"{{reservaId}}\",\n  \"viajeId\": \"{{viajeId}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Rechazar reserva (conductor)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/reservas/rechazar",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "reservas",
+                "rechazar"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": \"{{reservaId}}\",\n  \"viajeId\": \"{{viajeId}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Cancelar reserva (pasajero)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/reservas/cancelar",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "reservas",
+                "cancelar"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": \"{{reservaId}}\",\n  \"viajeId\": \"{{viajeId}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Editar reserva",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/reservas",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "reservas"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": \"{{reservaId}}\",\n  \"viajeId\": \"{{viajeId}}\",\n  \"asientos\": 1,\n  \"estado\": \"PENDIENTE\",\n  \"puntaje\": 10\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Eliminar reserva",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/reservas",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "reservas"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": \"{{reservaId}}\",\n  \"viajeId\": \"{{viajeId}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Registrar pago de reserva",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/reservas/pagar",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "reservas",
+                "pagar"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"reservaId\": \"{{reservaId}}\",\n  \"importe\": 15000.0,\n  \"forma\": \"MERCADOPAGO\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Eliminar pago de reserva",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/reservas/eliminar-pago",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "reservas",
+                "eliminar-pago"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": \"{{pagoId}}\",\n  \"reservaId\": \"{{reservaId}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        }
+      ],
+      "description": "Reservas de un viaje, su ciclo de estados y los pagos asociados (ReservaController)."
+    }
+  ]
+}

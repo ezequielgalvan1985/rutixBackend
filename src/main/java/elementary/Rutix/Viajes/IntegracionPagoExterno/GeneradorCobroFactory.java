@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 @Component
-public class GeneradorCobroFactory {
+public class GeneradorCobroFactory{
 
     private final Map<MetodoPagoEnum, GeneradorCobroStrategy> strategies;
 

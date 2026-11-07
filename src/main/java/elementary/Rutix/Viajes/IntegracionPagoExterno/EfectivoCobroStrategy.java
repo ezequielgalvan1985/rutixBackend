@@ -6,9 +6,10 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class EfectivoCobroStrategy implements GeneradorCobroStrategy{
+
     @Override
     public MetodoPagoEnum getMetodoPago() {
-        return null;
+        return MetodoPagoEnum.EFECTIVO;
     }
 
     @Override
