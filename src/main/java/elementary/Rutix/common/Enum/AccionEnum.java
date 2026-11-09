@@ -7,5 +7,6 @@ public enum AccionEnum {
     RESERVA_ELIMINAR,
     RESERVA_REGISTRAR,
     RESERVA_PAGAR,
-    RESERVA_VER
+    RESERVA_VER,
+    VIAJE_COMPLETAR
 }

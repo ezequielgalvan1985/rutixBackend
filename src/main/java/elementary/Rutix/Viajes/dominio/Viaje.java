@@ -51,7 +51,7 @@ public class Viaje {
     @JoinColumn(name = "vehiculo_id", nullable = false)
     private Vehiculo vehiculo;
 
-    @OneToMany(mappedBy = "viaje",  cascade = CascadeType.ALL, fetch = FetchType.EAGER,orphanRemoval = true)
+    @OneToMany(mappedBy = "viaje",  cascade = CascadeType.ALL, fetch = FetchType.LAZY,orphanRemoval = true)
     private List<Reserva> listaReservas = new ArrayList<Reserva>();
 
 
@@ -96,9 +96,30 @@ public class Viaje {
         this.listaReservas.remove(reserva);
     }
 
+    public void iniciar(){
+        if (this.getEstado() != EstadoViajeEnum.CREADO && this.getEstado() != EstadoViajeEnum.COMPLETO)
+            throw new ReglaNegocioException("Solo se puede Iniciar un viaje en estado CREADO o COMPLETO");
+        this.setEstado(EstadoViajeEnum.EN_CURSO);
+    }
+
+    public void completar(){
+        if (this.getEstado() != EstadoViajeEnum.CREADO)
+            throw new ReglaNegocioException("Solo se puede Completar un viaje en estado CREADO");
+        this.setEstado(EstadoViajeEnum.COMPLETO);
+    }
+
     public void confirmarReserva(Long id){
         Reserva r = this.buscarReservaPorId(id);
         r.confirmar();
+
+        int asientosConfirmados = this.listaReservas.stream()
+                .filter(x -> x.getEstado() == EstadoReserva.CONFIRMADA)
+                .mapToInt(Reserva::getAsientos)
+                .sum();
+
+        if (asientosConfirmados >= this.getAsientos() && this.getEstado() == EstadoViajeEnum.CREADO) {
+            this.completar();
+        }
     }
 
     public void rechazarReserva(Long id){

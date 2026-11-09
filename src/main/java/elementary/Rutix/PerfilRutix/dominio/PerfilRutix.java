@@ -42,13 +42,13 @@ public class PerfilRutix {
     @Column(length = 50)
     private String ciudad;
 
-    @OneToMany(mappedBy = "perfil",  cascade = CascadeType.ALL, fetch = FetchType.EAGER,orphanRemoval = true)
+    @OneToMany(mappedBy = "perfil",  cascade = CascadeType.ALL, fetch = FetchType.LAZY,orphanRemoval = true)
     private List<Vehiculo> listaVehiculos = new ArrayList<Vehiculo>();; //debito o credito
 
-    @OneToMany(mappedBy = "perfil",  cascade = CascadeType.ALL, fetch = FetchType.EAGER,orphanRemoval = true)
+    @OneToMany(mappedBy = "perfil",  cascade = CascadeType.ALL, fetch = FetchType.LAZY,orphanRemoval = true)
     private List<Tarjeta> listaTarjetas = new ArrayList<Tarjeta>();; //debito o credito
 
-    @OneToMany(mappedBy = "perfil",  cascade = CascadeType.ALL, fetch = FetchType.EAGER,orphanRemoval = true)
+    @OneToMany(mappedBy = "perfil",  cascade = CascadeType.ALL, fetch = FetchType.LAZY,orphanRemoval = true)
     private List<CuentaBancaria> listaCuentas = new ArrayList<CuentaBancaria>();; //debito o credito
 
 

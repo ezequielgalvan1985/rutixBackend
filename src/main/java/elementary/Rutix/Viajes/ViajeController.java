@@ -4,6 +4,8 @@ import elementary.Rutix.Viajes.comandos.reservas.EliminarReservaDeViajeComando;
 import elementary.Rutix.Viajes.comandos.reservas.RegistrarReservaEnViajeComando;
 import elementary.Rutix.Viajes.comandos.ActualizarViajeComando;
 import elementary.Rutix.Viajes.comandos.EliminarViajeComando;
+import elementary.Rutix.Viajes.comandos.IniciarViajeComando;
+import elementary.Rutix.Viajes.comandos.CompletarViajeComando;
 import elementary.Rutix.Viajes.comandos.RegistrarViajeComando;
 import elementary.Rutix.Viajes.consultas.*;
 import elementary.Rutix.Viajes.consultas.dto.ViajeDetalleDto;
@@ -14,6 +16,7 @@ import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,6 +32,8 @@ public class ViajeController {
     private final ActualizarViajeComando actualizarViajeUseCase;
     private final ListadoViajeConsulta listadoViajeUseCase;
     private final EliminarViajeComando eliminarViajeUseCase;
+    private final IniciarViajeComando iniciarViajeUseCase;
+    private final CompletarViajeComando completarViajeUseCase;
     private final BuscarIdViajeConsulta buscarIdViajeUseCase;
     private final BuscarViajesConsulta buscarViajesConsulta;
     private final MisViajesConductorConsulta listadoMisViajesConductorConsulta;
@@ -39,6 +44,8 @@ public class ViajeController {
     public ViajeController(RegistrarViajeComando registrarViajeUseCase,
                            ActualizarViajeComando actualizarViajeUseCase,
                            EliminarViajeComando eliminarViajeUseCase,
+                           IniciarViajeComando iniciarViajeUseCase,
+                           CompletarViajeComando completarViajeUseCase,
                            BuscarIdViajeConsulta buscarViajeUseCase,
                            ListadoViajeConsulta listadoViajeUseCase,
 
@@ -49,6 +56,8 @@ public class ViajeController {
         this.registrarViajeUseCase = registrarViajeUseCase;
         this.actualizarViajeUseCase = actualizarViajeUseCase;
         this.eliminarViajeUseCase = eliminarViajeUseCase;
+        this.iniciarViajeUseCase = iniciarViajeUseCase;
+        this.completarViajeUseCase = completarViajeUseCase;
         this.buscarIdViajeUseCase = buscarViajeUseCase;
         this.listadoViajeUseCase = listadoViajeUseCase;
         this.buscarViajesConsulta = buscarViajesConsulta;
@@ -102,14 +111,26 @@ public class ViajeController {
     }
 
     @PutMapping()
+    @PreAuthorize("@viajeSecurity.esConductor(#dto.id, authentication)")
     public void edit( @RequestBody @Valid  ViajeDto dto){
         actualizarViajeUseCase.execute(dto);
     }
 
     @DeleteMapping(value="/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PreAuthorize("@viajeSecurity.esConductor(#id, authentication)")
     public void delete(@PathVariable("id") Long id){
         eliminarViajeUseCase.execute(id);
+    }
+
+    @PutMapping(value="/{id}/iniciar")
+    public void iniciar(@PathVariable("id") Long id){
+        iniciarViajeUseCase.execute(id);
+    }
+
+    @PutMapping(value="/{id}/completar")
+    public void completar(@PathVariable("id") Long id){
+        completarViajeUseCase.execute(id);
     }
 
 

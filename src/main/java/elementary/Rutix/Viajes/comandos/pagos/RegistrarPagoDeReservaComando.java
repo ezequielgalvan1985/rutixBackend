@@ -43,10 +43,10 @@ public class RegistrarPagoDeReservaComando implements Comando<PagoDto, ReservaDt
         Reserva reserva = this.repo.findById(value.getReservaId()).orElseThrow(()->new ReglaNegocioException("NO existe reserva"));
 
         //validaciones
-        //estado pendiente
+        //la reserva debe estar confirmada por el conductor antes de poder pagarse
 
-        if (reserva.getEstado()!= EstadoReserva.PENDIENTE)
-            throw new ReglaNegocioException("Reserva no se encuentra PENDIENTE");
+        if (reserva.getEstado()!= EstadoReserva.CONFIRMADA)
+            throw new ReglaNegocioException("Reserva no se encuentra CONFIRMADA");
 
 
         //usuario que paga reserva debe ser el mismo que genero la reserva
@@ -57,7 +57,7 @@ public class RegistrarPagoDeReservaComando implements Comando<PagoDto, ReservaDt
         PerfilRutix usuarioReserva = repoPerfil.findByUsuarioId(reserva.getPasajero().getId())
                                         .orElseThrow(() -> new ReglaNegocioException("No se encontró el perfil"));
 
-        if (usuarioLogueado.getId()!= usuarioReserva.getId())
+        if (!usuarioLogueado.getId().equals(usuarioReserva.getId()))
             throw new ReglaNegocioException("Acceso Denegado para Pagar Reserva");
 
         Pago p = new Pago();

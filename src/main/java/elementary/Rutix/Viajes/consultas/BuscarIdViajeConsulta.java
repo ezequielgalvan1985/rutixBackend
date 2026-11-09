@@ -11,6 +11,7 @@ import elementary.Rutix.Viajes.dominio.Viaje;
 import elementary.Rutix.Viajes.dto.ReservaDto;
 import elementary.Rutix.Viajes.repositorios.ViajeRepository;
 import elementary.Rutix.common.Enum.AccionEnum;
+import elementary.Rutix.common.Enum.EstadoViajeEnum;
 import elementary.Rutix.common.excepciones.NoEncontradoException;
 import elementary.Rutix.common.excepciones.ReglaNegocioException;
 import elementary.Rutix.common.interfaces.Consulta;
@@ -78,6 +79,9 @@ public class BuscarIdViajeConsulta implements Consulta<Long, ViajeDetalleDto> {
         if (v.getConductor().getId() == p.getId()){
             lista.add(AccionEnum.RESERVA_CONFIRMAR.name());
             lista.add(AccionEnum.RESERVA_RECHAZAR.name());
+            if (v.getEstado() == EstadoViajeEnum.CREADO){
+                lista.add(AccionEnum.VIAJE_COMPLETAR.name());
+            }
         }else{
 
             lista.add(AccionEnum.RESERVA_REGISTRAR.name());
