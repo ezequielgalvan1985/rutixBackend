@@ -111,14 +111,14 @@ public class ViajeController {
     }
 
     @PutMapping()
-    @PreAuthorize("@viajeSecurity.esConductor(#dto.id, authentication)")
+    @PreAuthorize("hasRole('ADMIN') or @viajeSecurity.esConductor(#dto.id, authentication)")
     public void edit( @RequestBody @Valid  ViajeDto dto){
         actualizarViajeUseCase.execute(dto);
     }
 
     @DeleteMapping(value="/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @PreAuthorize("@viajeSecurity.esConductor(#id, authentication)")
+    @PreAuthorize("hasRole('ADMIN') or @viajeSecurity.esConductor(#id, authentication)")
     public void delete(@PathVariable("id") Long id){
         eliminarViajeUseCase.execute(id);
     }

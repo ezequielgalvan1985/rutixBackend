@@ -122,7 +122,7 @@ public class ReservaController {
 
     @DeleteMapping()
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @PreAuthorize("@reservaSecurity.esPasajeroDueno(#dto.id, authentication)")
+    @PreAuthorize("hasRole('ADMIN') or @reservaSecurity.esPasajeroDueno(#dto.id, authentication)")
     public void delete(@RequestBody EliminarReservaDeViajeComandoDto dto){
         eliminar.execute(dto);
     }

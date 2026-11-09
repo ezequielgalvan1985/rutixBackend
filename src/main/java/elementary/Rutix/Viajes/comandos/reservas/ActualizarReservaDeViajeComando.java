@@ -12,6 +12,7 @@ import elementary.Rutix.common.Enum.EstadoReserva;
 import elementary.Rutix.common.excepciones.ReglaNegocioException;
 import elementary.Rutix.common.interfaces.Comando;
 import org.modelmapper.ModelMapper;
+import elementary.Rutix.Security.RolUtils;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -48,7 +49,7 @@ public class ActualizarReservaDeViajeComando implements Comando<ActualizarReserv
         Long uid = Long.parseLong(auth.getName());
         PerfilRutix usuarioLogueado = repoPerfil.findByUsuarioId(uid).orElseThrow(() -> new ReglaNegocioException("No se encontró el perfil"));
 
-        if (!usuarioLogueado.getId().equals(r.getPasajero().getId()))
+        if (!RolUtils.esAdmin(auth) && !usuarioLogueado.getId().equals(r.getPasajero().getId()))
             throw new ReglaNegocioException("Solo el pasajero que generó la reserva puede actualizarla");
 
         if (r.getEstado() != EstadoReserva.PENDIENTE)

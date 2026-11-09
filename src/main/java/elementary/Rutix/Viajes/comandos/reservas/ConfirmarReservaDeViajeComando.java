@@ -11,6 +11,7 @@ import elementary.Rutix.Viajes.repositorios.ViajeRepository;
 import elementary.Rutix.common.excepciones.ReglaNegocioException;
 import elementary.Rutix.common.interfaces.Comando;
 import org.modelmapper.ModelMapper;
+import elementary.Rutix.Security.RolUtils;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -32,7 +33,8 @@ public class ConfirmarReservaDeViajeComando implements Comando<ActualizarEstadoR
         PerfilRutix p = repoPerfil.findByUsuarioId(uid).orElseThrow(() -> new ReglaNegocioException("No se encontró el perfil"));
 
         Viaje v = this.repoViaje.findById(value.getViajeId()).orElseThrow(()-> new ReglaNegocioException("Viaje Inexistente"));
-        if (v.getConductor().getId().equals(p.getId()) ==false) throw new ReglaNegocioException("Solo puede Confirmar la Reserva el Conductor del Viaje");
+        if (!RolUtils.esAdmin(auth) && v.getConductor().getId().equals(p.getId()) == false)
+            throw new ReglaNegocioException("Solo puede Confirmar la Reserva el Conductor del Viaje");
         v.confirmarReserva(value.getId());
         this.repoViaje.save(v);
 

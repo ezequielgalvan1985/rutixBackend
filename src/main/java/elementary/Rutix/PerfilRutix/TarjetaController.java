@@ -70,7 +70,7 @@ public class TarjetaController {
     }
 
     @PutMapping()
-    @PreAuthorize("@perfilRecursoSecurity.esDuenoDeTarjeta(#dto.id, authentication)")
+    @PreAuthorize("hasRole('ADMIN') or @perfilRecursoSecurity.esDuenoDeTarjeta(#dto.id, authentication)")
     public void edit(@RequestBody @Valid TarjetaDto dto){
         actualizar.execute(dto);
     }

@@ -8,6 +8,7 @@ import elementary.Rutix.Viajes.dominio.Viaje;
 import elementary.Rutix.Viajes.repositorios.ViajeRepository;
 import elementary.Rutix.common.excepciones.ReglaNegocioException;
 import elementary.Rutix.common.interfaces.Comando;
+import elementary.Rutix.Security.RolUtils;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -35,7 +36,7 @@ public class RechazarReservaDeViajeComando implements Comando<ActualizarEstadoRe
                 .findFirst()
                 .orElseThrow(() -> new RuntimeException("No existe la Reserva"));
 
-        if (v.getConductor().getId()!= p.getId() && r.getPasajero().getId()!= p.getId() )
+        if (!RolUtils.esAdmin(auth) && !v.getConductor().getId().equals(p.getId()) && !r.getPasajero().getId().equals(p.getId()))
             throw new ReglaNegocioException("Solo puede Rechazar la Reserva el Conductor o el Pasajero del Viaje");
 
         v.rechazarReserva(value.getId());

@@ -64,7 +64,7 @@ public class CuentaBancariaController {
     }
 
     @PutMapping()
-    @PreAuthorize("@perfilRecursoSecurity.esDuenoDeCuenta(#dto.id, authentication)")
+    @PreAuthorize("hasRole('ADMIN') or @perfilRecursoSecurity.esDuenoDeCuenta(#dto.id, authentication)")
     public void edit(@RequestBody @Valid CuentaBancariaDto dto){
         actualizar.execute(dto);
     }

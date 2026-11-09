@@ -6,6 +6,7 @@ import elementary.Rutix.Viajes.dominio.Viaje;
 import elementary.Rutix.Viajes.repositorios.ViajeRepository;
 import elementary.Rutix.common.excepciones.ReglaNegocioException;
 import elementary.Rutix.common.interfaces.Comando;
+import elementary.Rutix.Security.RolUtils;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -29,7 +30,7 @@ public class CompletarViajeComando implements Comando<Long, Void> {
 
         Viaje v = this.repoViaje.findById(value).orElseThrow(() -> new ReglaNegocioException("Viaje Inexistente"));
 
-        if (v.getConductor().getId().equals(p.getId()) == false)
+        if (!RolUtils.esAdmin(auth) && v.getConductor().getId().equals(p.getId()) == false)
             throw new ReglaNegocioException("Solo puede Completar el Viaje el Conductor del Viaje");
 
         v.completar();
