@@ -20,10 +20,12 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -45,19 +47,38 @@ public class BuscarViajesConsulta implements Consulta<BuscarViajesRequestConsult
 
     }
 
+    private static final long RANGO_FECHAS_MAXIMO_DIAS = 31;
+
     @Override
     public PageResponseDto<ViajeResumidoDto> execute(BuscarViajesRequestConsultaDto input) {
+
+        if (input.getFechaDesde() != null && input.getFechaHasta() != null) {
+            if (input.getFechaHasta().isBefore(input.getFechaDesde()))
+                throw new ReglaNegocioException("La fecha hasta no puede ser anterior a la fecha desde");
+
+            long dias = ChronoUnit.DAYS.between(input.getFechaDesde(), input.getFechaHasta());
+            if (dias > RANGO_FECHAS_MAXIMO_DIAS)
+                throw new ReglaNegocioException("El rango entre fecha desde y fecha hasta no puede superar los " + RANGO_FECHAS_MAXIMO_DIAS + " dias");
+        }
+
         Pageable pageable = PageRequest.of(
                 input.getOffset().intValue(),   // page
                 input.getLimit(),               // size
                 Sort.by(Sort.Direction.DESC, "id")
         );
 
+        // La busqueda es publica (ver SecurityConfig): sin token, auth es un
+        // AnonymousAuthenticationToken, no null. Si hay un usuario real logueado
+        // usamos su perfil para armar accionesDisponibles; si no, queda sin acciones
+        // (debe iniciar sesion para reservar/gestionar).
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        Long uid = Long.parseLong(auth.getName());
-        this.perfilLogueado = repoPerfil.findByUsuarioId(uid).orElseThrow(() -> new ReglaNegocioException("No se encontró el perfil"));
+        this.perfilLogueado = null;
+        if (auth != null && auth.isAuthenticated() && !(auth instanceof AnonymousAuthenticationToken)) {
+            Long uid = Long.parseLong(auth.getName());
+            this.perfilLogueado = repoPerfil.findByUsuarioId(uid).orElse(null);
+        }
 
-        Page<Viaje> result = this.repo.buscarViajes(input.getFechaSalida(), input.getCiudadPartida(), input.getCiudadDestino(), input.getEstado(), pageable);
+        Page<Viaje> result = this.repo.buscarViajes(input.getFechaDesde(), input.getFechaHasta(), input.getCiudadPartida(), input.getCiudadDestino(), input.getEstado(), pageable);
 
         return PageResponseDto.<ViajeResumidoDto>builder()
                 .data(result.map(this::toDto).getContent())
@@ -93,6 +114,11 @@ public class BuscarViajesConsulta implements Consulta<BuscarViajesRequestConsult
     }
     private List<String>getListaAcciones(Viaje v, PerfilRutix p){
         List<String> lista = new ArrayList<>();
+        // Sin sesion (busqueda publica/anonima) no hay ninguna accion disponible:
+        // hace falta iniciar sesion para reservar o gestionar el viaje.
+        if (p == null) {
+            return lista;
+        }
         //si EL conductor esta viendo el detalle del viaje
         if (v.getConductor().getId() == p.getId()){
             lista.add(AccionEnum.RESERVA_CONFIRMAR.name());

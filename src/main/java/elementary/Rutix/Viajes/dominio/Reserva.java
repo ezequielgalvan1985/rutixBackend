@@ -90,4 +90,16 @@ public class Reserva {
         if(this.getEstado()!=EstadoReserva.PENDIENTE) throw new ReglaNegocioException("Solo se puede Cancelar una reserva pendiente");
         this.setEstado(EstadoReserva.CANCELADA);
     }
+
+    /**
+     * Cancelacion en cascada por cancelacion del Viaje: a diferencia de cancelar(),
+     * aqui la reserva puede venir de PENDIENTE, CONFIRMADA o PAGADA (el pasajero no
+     * elige cancelar, el viaje ya no se va a realizar). Si ya estaba en un estado
+     * terminal (CANCELADA/RECHAZADA) no hace nada.
+     */
+    public void cancelarPorViajeCancelado(){
+        if (this.getEstado() == EstadoReserva.CANCELADA || this.getEstado() == EstadoReserva.RECHAZADA)
+            return;
+        this.setEstado(EstadoReserva.CANCELADA);
+    }
 }

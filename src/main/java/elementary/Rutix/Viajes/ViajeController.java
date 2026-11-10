@@ -6,6 +6,7 @@ import elementary.Rutix.Viajes.comandos.ActualizarViajeComando;
 import elementary.Rutix.Viajes.comandos.EliminarViajeComando;
 import elementary.Rutix.Viajes.comandos.IniciarViajeComando;
 import elementary.Rutix.Viajes.comandos.CompletarViajeComando;
+import elementary.Rutix.Viajes.comandos.CancelarViajeComando;
 import elementary.Rutix.Viajes.comandos.RegistrarViajeComando;
 import elementary.Rutix.Viajes.consultas.*;
 import elementary.Rutix.Viajes.consultas.dto.ViajeDetalleDto;
@@ -34,6 +35,7 @@ public class ViajeController {
     private final EliminarViajeComando eliminarViajeUseCase;
     private final IniciarViajeComando iniciarViajeUseCase;
     private final CompletarViajeComando completarViajeUseCase;
+    private final CancelarViajeComando cancelarViajeUseCase;
     private final BuscarIdViajeConsulta buscarIdViajeUseCase;
     private final BuscarViajesConsulta buscarViajesConsulta;
     private final MisViajesConductorConsulta listadoMisViajesConductorConsulta;
@@ -46,6 +48,7 @@ public class ViajeController {
                            EliminarViajeComando eliminarViajeUseCase,
                            IniciarViajeComando iniciarViajeUseCase,
                            CompletarViajeComando completarViajeUseCase,
+                           CancelarViajeComando cancelarViajeUseCase,
                            BuscarIdViajeConsulta buscarViajeUseCase,
                            ListadoViajeConsulta listadoViajeUseCase,
 
@@ -58,6 +61,7 @@ public class ViajeController {
         this.eliminarViajeUseCase = eliminarViajeUseCase;
         this.iniciarViajeUseCase = iniciarViajeUseCase;
         this.completarViajeUseCase = completarViajeUseCase;
+        this.cancelarViajeUseCase = cancelarViajeUseCase;
         this.buscarIdViajeUseCase = buscarViajeUseCase;
         this.listadoViajeUseCase = listadoViajeUseCase;
         this.buscarViajesConsulta = buscarViajesConsulta;
@@ -131,6 +135,12 @@ public class ViajeController {
     @PutMapping(value="/{id}/completar")
     public void completar(@PathVariable("id") Long id){
         completarViajeUseCase.execute(id);
+    }
+
+    @PutMapping(value="/{id}/cancelar")
+    @PreAuthorize("hasRole('ADMIN') or @viajeSecurity.esConductor(#id, authentication)")
+    public void cancelar(@PathVariable("id") Long id){
+        cancelarViajeUseCase.execute(id);
     }
 
 

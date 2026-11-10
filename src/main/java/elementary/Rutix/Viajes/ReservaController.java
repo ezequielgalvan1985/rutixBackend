@@ -3,6 +3,7 @@ package elementary.Rutix.Viajes;
 import elementary.Rutix.Viajes.comandos.dto.*;
 import elementary.Rutix.Viajes.comandos.pagos.EliminarPagoDeReservaComando;
 import elementary.Rutix.Viajes.comandos.pagos.RegistrarPagoDeReservaComando;
+import elementary.Rutix.Viajes.comandos.pagos.DevolucionPagoDeReservaComando;
 import elementary.Rutix.Viajes.comandos.reservas.*;
 import elementary.Rutix.Viajes.consultas.reservas.BuscarIdReservaConsulta;
 import elementary.Rutix.Viajes.consultas.MisViajesDePasajeroConsulta;
@@ -34,6 +35,7 @@ public class ReservaController {
         private final ActualizarReservaDeViajeComando actualizar;
         private final RegistrarPagoDeReservaComando registrarPago;
         private final EliminarPagoDeReservaComando eliminarPago;
+        private final DevolucionPagoDeReservaComando devolucionPago;
         private final ConfirmarReservaDeViajeComando confirmarReserva;
         private final RechazarReservaDeViajeComando rechazarReserva;
         private final CancelarReservaDeViajeComando cancelarReserva;
@@ -53,6 +55,7 @@ public class ReservaController {
                              ActualizarReservaDeViajeComando actualizar,
                              RegistrarPagoDeReservaComando registrarPago,
                              EliminarPagoDeReservaComando eliminarPago,
+                             DevolucionPagoDeReservaComando devolucionPago,
                              ConfirmarReservaDeViajeComando confirmarReserva,
                              RechazarReservaDeViajeComando rechazarReserva,
                              CancelarReservaDeViajeComando cancelarReserva,
@@ -65,6 +68,7 @@ public class ReservaController {
         this.actualizar = actualizar;
         this.registrarPago = registrarPago;
         this.eliminarPago = eliminarPago;
+        this.devolucionPago = devolucionPago;
         this.confirmarReserva = confirmarReserva;
         this.rechazarReserva = rechazarReserva;
         this.buscarReservaPorViajeIdConsulta = buscarReservaPorViajeIdConsulta;
@@ -138,6 +142,12 @@ public class ReservaController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@RequestBody @Valid EliminarPagoDeReservaComandoDto dto){
         eliminarPago.execute(dto);
+    }
+
+    @PutMapping("/devolver-pago")
+    @PreAuthorize("hasRole('ADMIN')")
+    public void devolverPago(@RequestBody @Valid DevolucionPagoDeReservaComandoDto dto){
+        devolucionPago.execute(dto);
     }
 
 }

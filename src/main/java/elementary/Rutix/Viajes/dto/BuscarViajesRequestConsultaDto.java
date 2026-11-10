@@ -15,7 +15,8 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 public class BuscarViajesRequestConsultaDto {
-    private LocalDate fechaSalida;
+    private LocalDate fechaDesde;
+    private LocalDate fechaHasta;
     private String ciudadPartida;
     private String ciudadDestino;
 

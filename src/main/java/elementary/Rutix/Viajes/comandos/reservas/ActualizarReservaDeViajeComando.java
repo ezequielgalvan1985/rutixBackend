@@ -63,7 +63,6 @@ public class ActualizarReservaDeViajeComando implements Comando<ActualizarReserv
             throw new ReglaNegocioException("La cantidad de asientos no puede superar los asientos disponibles del viaje");
 
         r.setAsientos(value.getAsientos());
-        r.setEstado(value.getEstado());
         r.setPuntaje(value.getPuntaje());
         r.setFechaActualizacion(LocalDateTime.now(ZoneId.of("America/Argentina/Buenos_Aires")));
         repoReserva.save(r);

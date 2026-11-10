@@ -2,6 +2,7 @@ package elementary.Rutix.Viajes.dominio;
 
 import elementary.Rutix.common.Enum.EstadoPagoEnum;
 import elementary.Rutix.common.Enum.MetodoPagoEnum;
+import elementary.Rutix.common.excepciones.ReglaNegocioException;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -46,5 +47,11 @@ public class Pago {
     }
 
     private String externalId;
+
+    public void devolver(){
+        if (this.getEstado() != EstadoPagoEnum.PENDIENTE && this.getEstado() != EstadoPagoEnum.CONFIRMADO)
+            throw new ReglaNegocioException("Solo se puede Devolver un pago en estado PENDIENTE o CONFIRMADO");
+        this.setEstado(EstadoPagoEnum.DEVUELTO);
+    }
 
 }

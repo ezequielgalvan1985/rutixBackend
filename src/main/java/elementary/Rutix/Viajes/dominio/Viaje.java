@@ -108,6 +108,15 @@ public class Viaje {
         this.setEstado(EstadoViajeEnum.COMPLETO);
     }
 
+    public void cancelar(){
+        if (this.getEstado() != EstadoViajeEnum.CREADO && this.getEstado() != EstadoViajeEnum.COMPLETO)
+            throw new ReglaNegocioException("Solo se puede Cancelar un viaje en estado CREADO o COMPLETO");
+        this.setEstado(EstadoViajeEnum.CANCELADO);
+        for (Reserva r : this.listaReservas) {
+            r.cancelarPorViajeCancelado();
+        }
+    }
+
     public void confirmarReserva(Long id){
         Reserva r = this.buscarReservaPorId(id);
         r.confirmar();
