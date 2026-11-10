@@ -2,6 +2,7 @@ package elementary.Rutix.Viajes.dto;
 
 import elementary.Rutix.PerfilRutix.dto.PerfilRutixResumidoDto;
 import elementary.Rutix.PerfilRutix.dto.VehiculoDto;
+import elementary.Rutix.Ubicaciones.dto.CiudadAutocompleteDto;
 import elementary.Rutix.common.Enum.EstadoViajeEnum;
 import elementary.Rutix.common.validators.interfaces.ValidFechaSalidaViaje;
 import jakarta.validation.constraints.Max;
@@ -34,11 +35,9 @@ public class ViajeResumidoDto {
     @NotNull
     private LocalTime horaLlegada;
 
-    @Size(max=100, message = "Lugar de salida supera la cantidad maxima de caracteres permitida 100")
-    private String ciudadPartida;
+    private CiudadAutocompleteDto ciudadPartida;
 
-    @Size(max=100, message = "Destino supera la cantidad maxima de caracteres permitida 100")
-    private String ciudadDestino;
+    private CiudadAutocompleteDto ciudadDestino;
 
     @NotNull
     private PerfilRutixResumidoDto conductor;

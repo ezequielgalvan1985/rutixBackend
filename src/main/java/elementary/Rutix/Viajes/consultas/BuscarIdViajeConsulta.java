@@ -10,6 +10,7 @@ import elementary.Rutix.Viajes.dominio.Reserva;
 import elementary.Rutix.Viajes.dominio.Viaje;
 import elementary.Rutix.Viajes.dto.ReservaDto;
 import elementary.Rutix.Viajes.repositorios.ViajeRepository;
+import elementary.Rutix.Ubicaciones.CiudadMapper;
 import elementary.Rutix.common.Enum.AccionEnum;
 import elementary.Rutix.common.Enum.EstadoViajeEnum;
 import elementary.Rutix.common.excepciones.NoEncontradoException;
@@ -51,8 +52,8 @@ public class BuscarIdViajeConsulta implements Consulta<Long, ViajeDetalleDto> {
         ViajeDetalleDto dto = new ViajeDetalleDto()
                 .builder()
                 .id(r.getId())
-                .ciudadPartida(r.getCiudadPartida())
-                .ciudadDestino(r.getCiudadDestino())
+                .ciudadPartida(CiudadMapper.toDto(r.getCiudadPartida()))
+                .ciudadDestino(CiudadMapper.toDto(r.getCiudadDestino()))
                 .fechaSalida(r.getFechaSalida())
                 .horaSalida(r.getHoraSalida())
                 .horaLlegada(r.getHoraLlegada())

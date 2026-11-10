@@ -7,6 +7,7 @@ import elementary.Rutix.Viajes.dto.ReservaDto;
 import elementary.Rutix.Viajes.repositorios.ReservaRepository;
 import elementary.Rutix.common.excepciones.ReglaNegocioException;
 import elementary.Rutix.common.interfaces.Consulta;
+import java.util.List;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -34,7 +35,14 @@ public class BuscarReservaPorViajeIdConsulta implements Consulta<Long, ReservaDt
         Long uid = Long.parseLong(auth.getName());
         PerfilRutix perfilPasajeroId = repoPerfil.findByUsuarioId(uid).orElseThrow(() -> new ReglaNegocioException("No se encontró el perfil"));
 
-        Reserva r = repo.findByPasajeroIdAndViajeId(perfilPasajeroId.getId(),value ).orElseThrow(()->new ReglaNegocioException("Usuario Logueado no tiene Reserva en el Viaje"));
+        // Puede existir mas de una Reserva de este pasajero para el mismo
+        // viaje (p.ej. una RECHAZADA/CANCELADA vieja y una PENDIENTE nueva
+        // tras volver a reservar). "La reserva actual" es la mas reciente.
+        List<Reserva> reservas = repo.findByPasajeroIdAndViajeIdOrderByIdDesc(perfilPasajeroId.getId(), value);
+        if (reservas.isEmpty()) {
+            throw new ReglaNegocioException("Usuario Logueado no tiene Reserva en el Viaje");
+        }
+        Reserva r = reservas.get(0);
         return modelMapper.map(r,ReservaDto.class);
     }
 }

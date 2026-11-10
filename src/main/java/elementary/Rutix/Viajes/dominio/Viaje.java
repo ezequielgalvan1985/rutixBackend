@@ -2,6 +2,7 @@ package elementary.Rutix.Viajes.dominio;
 
 import elementary.Rutix.PerfilRutix.dominio.PerfilRutix;
 import elementary.Rutix.PerfilRutix.dominio.Vehiculo;
+import elementary.Rutix.Ubicaciones.dominio.Ciudad;
 import elementary.Rutix.common.Enum.EstadoReserva;
 import elementary.Rutix.common.Enum.EstadoViajeEnum;
 import elementary.Rutix.common.excepciones.ReglaNegocioException;
@@ -34,11 +35,16 @@ public class Viaje {
     @Column(nullable = false)
     private LocalTime horaSalida;
 
-    @Column(length = 100, nullable = false)
-    private String ciudadPartida;
+    // Reingenieria origen/destino: antes texto libre, ahora referencia a la
+    // entidad Ciudad (ver V4__viajes_ciudad_fk.sql). Las columnas de texto
+    // viejas quedan en la base sin mapear, como respaldo.
+    @ManyToOne
+    @JoinColumn(name = "ciudad_partida_id")
+    private Ciudad ciudadPartida;
 
-    @Column(length = 100, nullable = false)
-    private String ciudadDestino;
+    @ManyToOne
+    @JoinColumn(name = "ciudad_destino_id")
+    private Ciudad ciudadDestino;
 
     @Column(nullable = false)
     private LocalTime horaLlegada;

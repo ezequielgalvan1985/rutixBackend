@@ -19,5 +19,9 @@ public interface ReservaRepository extends JpaRepository<Reserva,Long> {
 
     Page<Reserva> findByPasajeroIdOrderByIdDesc(Long pasajeroId, Pageable pageable);
 
-    Optional<Reserva> findByPasajeroIdAndViajeId(Long pasajeroId, Long viajeId);
+    // Puede haber mas de una Reserva para el mismo pasajero+viaje (p.ej. una
+    // RECHAZADA/CANCELADA vieja y una PENDIENTE nueva tras volver a
+    // reservar), asi que esto ya no puede ser un Optional de resultado
+    // unico: devuelve todas, ordenadas de la mas nueva a la mas vieja.
+    List<Reserva> findByPasajeroIdAndViajeIdOrderByIdDesc(Long pasajeroId, Long viajeId);
 }

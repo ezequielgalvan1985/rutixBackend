@@ -9,6 +9,7 @@ import elementary.Rutix.Viajes.dto.BuscarViajesRequestConsultaDto;
 import elementary.Rutix.Viajes.dto.BuscarViajesResponseConsultaDto;
 import elementary.Rutix.Viajes.dto.ViajeResumidoDto;
 import elementary.Rutix.Viajes.repositorios.ViajeRepository;
+import elementary.Rutix.Ubicaciones.CiudadMapper;
 import elementary.Rutix.common.Enum.AccionEnum;
 import elementary.Rutix.common.dto.PageResponseDto;
 import elementary.Rutix.common.excepciones.NoEncontradoException;
@@ -78,7 +79,7 @@ public class BuscarViajesConsulta implements Consulta<BuscarViajesRequestConsult
             this.perfilLogueado = repoPerfil.findByUsuarioId(uid).orElse(null);
         }
 
-        Page<Viaje> result = this.repo.buscarViajes(input.getFechaDesde(), input.getFechaHasta(), input.getCiudadPartida(), input.getCiudadDestino(), input.getEstado(), pageable);
+        Page<Viaje> result = this.repo.buscarViajes(input.getFechaDesde(), input.getFechaHasta(), input.getCiudadPartidaId(), input.getCiudadDestinoId(), input.getEstado(), pageable);
 
         return PageResponseDto.<ViajeResumidoDto>builder()
                 .data(result.map(this::toDto).getContent())
@@ -94,8 +95,8 @@ public class BuscarViajesConsulta implements Consulta<BuscarViajesRequestConsult
         ViajeResumidoDto dto = new ViajeResumidoDto()
                 .builder()
                 .id(r.getId())
-                .ciudadPartida(r.getCiudadPartida())
-                .ciudadDestino(r.getCiudadDestino())
+                .ciudadPartida(CiudadMapper.toDto(r.getCiudadPartida()))
+                .ciudadDestino(CiudadMapper.toDto(r.getCiudadDestino()))
                 .fechaSalida(r.getFechaSalida())
                 .horaSalida(r.getHoraSalida())
                 .horaLlegada(r.getHoraLlegada())

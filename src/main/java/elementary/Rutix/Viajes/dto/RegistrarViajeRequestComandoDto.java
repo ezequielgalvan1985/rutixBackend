@@ -30,11 +30,11 @@ public class RegistrarViajeRequestComandoDto {
     @NotNull
     private LocalTime horaLlegada;
 
-    @Size(max=100, message = "Lugar de salida supera la cantidad maxima de caracteres permitida 100")
-    private String ciudadPartida;
+    @NotNull
+    private Long ciudadPartidaId;
 
-    @Size(max=100, message = "Destino supera la cantidad maxima de caracteres permitida 100")
-    private String ciudadDestino;
+    @NotNull
+    private Long ciudadDestinoId;
 
     private Long vehiculoId;
 

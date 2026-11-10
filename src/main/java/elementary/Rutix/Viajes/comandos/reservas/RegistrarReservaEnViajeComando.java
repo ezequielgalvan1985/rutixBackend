@@ -45,15 +45,20 @@ public class RegistrarReservaEnViajeComando implements Comando<RegistrarReservaD
         //agregar restriccion, pasajero no puede ser conductor
         if(v.getConductor().getId().equals(p.getId()))
             throw  new ReglaNegocioException("Conductor no puede reservar un asiento");
-        //buscar si tiene reserva este usuario
+        //buscar si tiene una reserva PENDIENTE este usuario (una reserva ya
+        //rechazada/cancelada/confirmada/pagada es un estado cerrado: una nueva
+        //reserva del mismo pasajero tiene que arrancar una fila nueva en
+        //PENDIENTE, no reabrir/sumarle asientos a la vieja -- eso fue lo que
+        //causaba que al rechazar una reserva de 3 asientos y volver a reservar
+        //1 asiento, la reserva rechazada quedara en 4 asientos sin volver a
+        //PENDIENTE).
 
-        //si existe reserva se debera modificar la Reserva agregando asientos cantidad de asientos
+        //si existe reserva PENDIENTE se debera modificar la Reserva agregando asientos cantidad de asientos
         Reserva reserva = v.getListaReservas().stream()
-                .filter(r -> r.getPasajero().getId().equals(p.getId()))
+                .filter(r -> r.getPasajero().getId().equals(p.getId()) && r.getEstado() == EstadoReserva.PENDIENTE)
                 .findFirst()
                 .orElse(null);
         if (reserva!=null){
-
 
             reserva.setAsientos(reserva.getAsientos() + value.getAsientos());
         }else{
@@ -63,11 +68,11 @@ public class RegistrarReservaEnViajeComando implements Comando<RegistrarReservaD
                     .asientos(value.getAsientos())
                     .estado(EstadoReserva.PENDIENTE)
                     .build();
+            v.registrarReserva(reserva);
         }
 
         v.setAsientosReservados(v.getAsientosReservados()+value.getAsientos());
         v.setAsientosDisponibles(v.getAsientos()-v.getAsientosReservados());
-        v.registrarReserva(reserva);
 
         repoViaje.save(v);
         return this.modelMapper.map(reserva, ReservaDto.class);

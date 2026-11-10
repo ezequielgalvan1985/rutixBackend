@@ -33,7 +33,14 @@ public class ListadoViajeConsulta implements Consulta<ConsultaListadoRequestDto,
         List<Viaje> resultset = this.repo.findAll(input.getOffset(), page);
         return resultset
                 .stream()
-                .map(model->modelMapper.map(model, ViajeDto.class))
+                .map(this::toDto)
                 .collect(Collectors.toList());
+    }
+
+    private ViajeDto toDto(Viaje model) {
+        ViajeDto dto = modelMapper.map(model, ViajeDto.class);
+        dto.setCiudadPartidaId(model.getCiudadPartida() != null ? model.getCiudadPartida().getId() : null);
+        dto.setCiudadDestinoId(model.getCiudadDestino() != null ? model.getCiudadDestino().getId() : null);
+        return dto;
     }
 }

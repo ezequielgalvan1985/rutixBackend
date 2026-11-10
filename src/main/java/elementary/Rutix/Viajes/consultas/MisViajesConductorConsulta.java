@@ -7,6 +7,7 @@ import elementary.Rutix.PerfilRutix.repositorios.PerfilRutixRepository;
 import elementary.Rutix.Viajes.dominio.Viaje;
 import elementary.Rutix.Viajes.dto.ViajeResumidoDto;
 import elementary.Rutix.Viajes.repositorios.ViajeRepository;
+import elementary.Rutix.Ubicaciones.CiudadMapper;
 import elementary.Rutix.common.dto.ConsultaListadoRequestDto;
 import elementary.Rutix.common.dto.PageResponseDto;
 import elementary.Rutix.common.excepciones.ReglaNegocioException;
@@ -65,8 +66,8 @@ public class MisViajesConductorConsulta implements Consulta<ConsultaListadoReque
         ViajeResumidoDto dto = new ViajeResumidoDto()
                 .builder()
                 .id(r.getId())
-                .ciudadPartida(r.getCiudadPartida())
-                .ciudadDestino(r.getCiudadDestino())
+                .ciudadPartida(CiudadMapper.toDto(r.getCiudadPartida()))
+                .ciudadDestino(CiudadMapper.toDto(r.getCiudadDestino()))
                 .fechaSalida(r.getFechaSalida())
                 .horaSalida(r.getHoraSalida())
                 .horaLlegada(r.getHoraLlegada())

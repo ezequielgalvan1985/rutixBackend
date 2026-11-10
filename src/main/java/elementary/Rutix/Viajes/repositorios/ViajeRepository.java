@@ -17,6 +17,9 @@ public interface ViajeRepository extends JpaRepository<Viaje,Long> {
     @Query(value = "SELECT m FROM Viaje m WHERE m.id > :offset ORDER BY m.id DESC")
     List<Viaje> findAll(@Param("offset") Long offset, Pageable pageable);
 
+    // Filtro de ciudad por FK (antes era comparacion de texto libre, fragil
+    // ante mayusculas/acentos distintos). m.ciudadPartida.id navega a la
+    // columna ciudad_partida_id sin necesidad de hacer join explicito.
     @Query("""
     SELECT m FROM Viaje m
     WHERE (
@@ -25,15 +28,15 @@ public interface ViajeRepository extends JpaRepository<Viaje,Long> {
         OR (:fechaDesde IS NOT NULL AND :fechaHasta IS NULL AND m.fechaSalida >= :fechaDesde)
         OR (:fechaDesde IS NULL AND :fechaHasta IS NOT NULL AND m.fechaSalida <= :fechaHasta)
     )
-    AND ((:ciudadPartida IS NULL or :ciudadPartida = '')OR m.ciudadPartida = :ciudadPartida )
-    AND ((:ciudadDestino IS NULL or :ciudadDestino = '') OR m.ciudadDestino = :ciudadDestino)
+    AND (:ciudadPartidaId IS NULL OR m.ciudadPartida.id = :ciudadPartidaId)
+    AND (:ciudadDestinoId IS NULL OR m.ciudadDestino.id = :ciudadDestinoId)
     AND (:estado IS NULL OR m.estado = :estado)
 """)
     Page<Viaje> buscarViajes(
             @Param("fechaDesde") LocalDate fechaDesde,
             @Param("fechaHasta") LocalDate fechaHasta,
-            @Param("ciudadPartida") String ciudadPartida,
-            @Param("ciudadDestino") String ciudadDestino,
+            @Param("ciudadPartidaId") Long ciudadPartidaId,
+            @Param("ciudadDestinoId") Long ciudadDestinoId,
             @Param("estado") EstadoViajeEnum estado,
             Pageable pageable);
 

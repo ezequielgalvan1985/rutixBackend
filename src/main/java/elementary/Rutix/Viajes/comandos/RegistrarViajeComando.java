@@ -9,6 +9,9 @@ import elementary.Rutix.Viajes.dominio.Viaje;
 import elementary.Rutix.Viajes.dto.RegistrarViajeRequestComandoDto;
 import elementary.Rutix.Viajes.dto.ViajeResumidoDto;
 import elementary.Rutix.Viajes.repositorios.ViajeRepository;
+import elementary.Rutix.Ubicaciones.CiudadMapper;
+import elementary.Rutix.Ubicaciones.dominio.Ciudad;
+import elementary.Rutix.Ubicaciones.repositorios.CiudadRepository;
 import elementary.Rutix.common.Enum.EstadoViajeEnum;
 import elementary.Rutix.common.excepciones.ReglaNegocioException;
 import elementary.Rutix.common.interfaces.Comando;
@@ -24,6 +27,7 @@ public class RegistrarViajeComando implements Comando<RegistrarViajeRequestComan
     private ModelMapper modelMapper;
     private ViajeRepository repo;
     private PerfilRutixRepository repoPerfil;
+    private CiudadRepository repoCiudad;
     //Reglas de negocio
     private PerfilConVehiculoHabilitadoReglaNegocio perfilConVehiculoHabilitadoReglaNegocio;
     private PerfilConCuentaHabilitadaReglaNegocio perfilConCuentaHabilitadaReglaNegocio;
@@ -31,11 +35,13 @@ public class RegistrarViajeComando implements Comando<RegistrarViajeRequestComan
     public RegistrarViajeComando(ModelMapper modelMapper,
                                  ViajeRepository repo,
                                  PerfilRutixRepository repoPerfil,
+                                 CiudadRepository repoCiudad,
                                  PerfilConVehiculoHabilitadoReglaNegocio perfilConVehiculoHabilitadoReglaNegocio,
                                  PerfilConCuentaHabilitadaReglaNegocio perfilConCuentaHabilitadaReglaNegocio) {
         this.modelMapper = modelMapper;
         this.repo = repo;
         this.repoPerfil = repoPerfil;
+        this.repoCiudad = repoCiudad;
         this.perfilConVehiculoHabilitadoReglaNegocio = perfilConVehiculoHabilitadoReglaNegocio;
         this.perfilConCuentaHabilitadaReglaNegocio = perfilConCuentaHabilitadaReglaNegocio;
     }
@@ -51,8 +57,13 @@ public class RegistrarViajeComando implements Comando<RegistrarViajeRequestComan
         v.setFechaSalida(input.getFechaSalida());
         v.setHoraSalida(input.getHoraSalida());
         v.setHoraLlegada(input.getHoraLlegada());
-        v.setCiudadPartida(input.getCiudadPartida());
-        v.setCiudadDestino(input.getCiudadDestino());
+
+        Ciudad ciudadPartida = repoCiudad.findById(input.getCiudadPartidaId())
+                .orElseThrow(() -> new ReglaNegocioException("La ciudad de partida no existe"));
+        Ciudad ciudadDestino = repoCiudad.findById(input.getCiudadDestinoId())
+                .orElseThrow(() -> new ReglaNegocioException("La ciudad de destino no existe"));
+        v.setCiudadPartida(ciudadPartida);
+        v.setCiudadDestino(ciudadDestino);
         v.setConductor(p);
         Vehiculo vx = p.getListaVehiculos().stream()
                 .filter(ve -> ve.getId().equals(input.getVehiculoId()))
@@ -70,7 +81,10 @@ public class RegistrarViajeComando implements Comando<RegistrarViajeRequestComan
         Viaje viaje = this.repo.save(v);
 
         //Respuesta
-        return   modelMapper.map(viaje, ViajeResumidoDto.class);
+        ViajeResumidoDto dto = modelMapper.map(viaje, ViajeResumidoDto.class);
+        dto.setCiudadPartida(CiudadMapper.toDto(viaje.getCiudadPartida()));
+        dto.setCiudadDestino(CiudadMapper.toDto(viaje.getCiudadDestino()));
+        return dto;
     }
 
 }

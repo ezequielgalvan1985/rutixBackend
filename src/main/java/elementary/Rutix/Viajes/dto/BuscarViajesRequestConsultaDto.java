@@ -17,8 +17,8 @@ import java.time.LocalDate;
 public class BuscarViajesRequestConsultaDto {
     private LocalDate fechaDesde;
     private LocalDate fechaHasta;
-    private String ciudadPartida;
-    private String ciudadDestino;
+    private Long ciudadPartidaId;
+    private Long ciudadDestinoId;
 
     @Enumerated(EnumType.STRING)
     private EstadoViajeEnum estado;

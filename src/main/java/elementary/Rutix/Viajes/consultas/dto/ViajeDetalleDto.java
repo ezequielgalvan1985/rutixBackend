@@ -3,6 +3,7 @@ package elementary.Rutix.Viajes.consultas.dto;
 import elementary.Rutix.PerfilRutix.dto.PerfilRutixResumidoDto;
 import elementary.Rutix.PerfilRutix.dto.VehiculoDto;
 import elementary.Rutix.Viajes.dto.ReservaDto;
+import elementary.Rutix.Ubicaciones.dto.CiudadAutocompleteDto;
 import elementary.Rutix.common.Enum.EstadoViajeEnum;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -25,8 +26,8 @@ public class ViajeDetalleDto {
     private LocalDate fechaSalida;
     private LocalTime horaSalida;
     private LocalTime horaLlegada;
-    private String ciudadPartida;
-    private String ciudadDestino;
+    private CiudadAutocompleteDto ciudadPartida;
+    private CiudadAutocompleteDto ciudadDestino;
     private PerfilRutixResumidoDto conductor;
     private VehiculoDto vehiculo;
     private List<ReservaViewDto> listaReservas = new ArrayList<ReservaViewDto>();
