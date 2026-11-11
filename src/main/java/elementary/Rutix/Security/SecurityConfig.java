@@ -66,6 +66,9 @@ public class SecurityConfig {
                         // El autocompletado de ciudades (combo origen/destino) tambien es
                         // publico: hace falta antes incluso de loguearse, para armar la busqueda.
                         .requestMatchers(HttpMethod.GET, "/v1/ubicaciones/**").permitAll()
+                        // Mercado Pago le pega directo al webhook (nunca manda un JWT de Rutix),
+                        // y el navegador del pasajero vuelve a la pagina de retorno sin sesion.
+                        .requestMatchers("/v1/reservas/pagar/mercadopago/**").permitAll()
                         .anyRequest().authenticated()
                 )
 

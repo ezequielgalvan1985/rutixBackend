@@ -27,4 +27,10 @@ public class PagoDto {
     @Enumerated(EnumType.STRING)
     private MetodoPagoEnum forma;
 
+    // Solo lo completa GeneradorCobroStrategy.generar() para un medio de
+    // pago online (Mercado Pago): el link de checkout (init_point) al que
+    // hay que mandar al pasajero a pagar. Para EFECTIVO queda vacio, no
+    // existe nada que redirigir.
+    private String checkoutUrl;
+
 }

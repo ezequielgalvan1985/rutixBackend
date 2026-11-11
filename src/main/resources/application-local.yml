@@ -79,6 +79,14 @@ management:
       base-path: /actuator
       exposure:
         include: info, health, prometheus, metrics
+mercadopago:
+  access-token: TEST-2857575870989415-041020-9ea5aab0089e2206cff5456f43f0f642-518631706
+  notification-url: https://passably-pranker-gotten.ngrok-free.dev/v1/reservas/pagar/mercadopago/webhook
+  back-urls:
+    success: https://passably-pranker-gotten.ngrok-free.dev/v1/reservas/pagar/mercadopago/retorno?estado=success
+    pending: https://passably-pranker-gotten.ngrok-free.dev/v1/reservas/pagar/mercadopago/retorno?estado=pending
+    failure: https://passably-pranker-gotten.ngrok-free.dev/v1/reservas/pagar/mercadopago/retorno?estado=failure
+
 security:
   jwt:
     key:
